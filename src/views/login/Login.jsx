@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useFormState } from 'react-use-form-state';
 import validateUser from '../../Global/functions/validateUser/validateUser';
 import ErrorDisplay from '../../Global/components/errorDisplay/ErrorDisplay';
+import debounce from '../../Global/functions/debounce/debounce';
+import './Login.sass';
 
 function Login() {
   const [formState, { text, password }] = useFormState();
@@ -11,36 +14,52 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(validateUser(formState.values));
+    console.log(formState.values);
 
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
+      return <Redirect to="/" />;
     } else {
-      console.log(validateUser(formState.values));
       updateErrors(validateUser(formState.values));
     }
   }
 
   return (
     <div className="Login">
-      <form onSubmit={handleSubmit}>
-        <input
-          {...text({
-            name: 'username',
-            onChange: e => console.log(e.target.value)
-          })}
-          required
-        />
-        {errors.username ? (
-          <ErrorDisplay errorMessage={errors.username} />
-        ) : null}
-        <input {...password('password')} required />
-        {errors.password ? (
-          <ErrorDisplay errorMessage={errors.password} />
-        ) : null}
+      <section className="Login__section">
+        <h2>Login</h2>
+        <Link className="Login__section__link--register" to="/register">
+          Not yet registered?
+        </Link>
+        <form onSubmit={handleSubmit} className="Login__section__form">
+          <input
+            className="Login__section__form__input"
+            placeholder="Username: "
+            {...text({
+              name: 'username',
+              onChange: e => debounce(e.target.value)
+            })}
+            required
+          />
+          {errors.username ? (
+            <ErrorDisplay errorMessage={errors.username} />
+          ) : null}
+          <input
+            className="Login__section__form__input"
+            placeholder="Password: "
+            {...password({
+              name: 'password',
+              onChange: e => debounce(e.target.value)
+            })}
+            required
+          />
+          {errors.password ? (
+            <ErrorDisplay errorMessage={errors.password} />
+          ) : null}
 
-        <button type="Submit">Submit</button>
-      </form>
+          <button type="Submit">Login</button>
+        </form>
+      </section>
     </div>
   );
 }
