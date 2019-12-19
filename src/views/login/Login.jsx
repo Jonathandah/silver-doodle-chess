@@ -14,8 +14,6 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formState.values);
-
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
       return <Redirect to="/" />;
