@@ -7,6 +7,7 @@ import ErrorDisplay from '../../Global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../Global/functions/debounce/debounce';
 import './Login.sass';
 import '../../Global/sass/Theme.sass';
+import { updateUser } from '../../Global/store/userStore';
 
 function Login() {
   const [submit, updateSubmit] = useState(false);
@@ -22,7 +23,8 @@ function Login() {
       axios
         .post('/api/login', formState.values)
         .then(response => {
-          console.log(response);
+          console.log(Object.values(response.data)[0].username);
+          updateUser(Object.values(response.data)[0].username);
           updateSubmit(true);
         })
         .catch(error => {
