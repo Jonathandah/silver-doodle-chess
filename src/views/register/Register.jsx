@@ -6,8 +6,10 @@ import validateUser from '../../Global/functions/validateUser/validateUser';
 import ErrorDisplay from '../../Global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../Global/functions/debounce/debounce';
 import './Register.sass';
+import '../../Global/sass/Theme.sass';
 
 function Register() {
+  const [submit, updateSubmit] = useState(false);
   const [formState, { text, password }] = useFormState();
   const [errors, updateErrors] = useState({});
 
@@ -18,15 +20,28 @@ function Register() {
 
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
-      return <Redirect to="/login" />;
+      axios
+        .post('/api/register', formState.values)
+        .then(response => {
+          console.log(response);
+          updateSubmit(true);
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          updateErrors({ catch: error.response.data });
+        });
     } else {
       updateErrors(validateUser(formState.values));
     }
   }
+
+  if (submit === true) {
+    return <Redirect to="/login" />;
+  }
   return (
     <div className="Register">
-      <section className="Register__section">
-        <h2>Register</h2>
+      <section className="Register__section light__purple">
+        <h2 className="white">Register</h2>
         <Link className="Register__section__link--login" to="/login">
           Already have an account?
         </Link>
@@ -52,8 +67,8 @@ function Register() {
             })}
             required
           />
-          {errors.password ? (
-            <ErrorDisplay errorMessage={errors.password} />
+          {errors.password || errors.catch ? (
+            <ErrorDisplay errorMessage={errors.password || errors.catch} />
           ) : null}
 
           <button type="Submit">Register</button>
