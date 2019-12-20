@@ -1,8 +1,10 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let server = require('../app.js');
+let app = require('../app.js');
 let should = chai.should();
 let fs = require('fs');
+
+let { server, validation } = app;
 
 chai.use(chaiHttp);
 
@@ -31,14 +33,21 @@ describe('User endpoints', () => {
         });
     });
   });
+
+  //   REGISTER TEST
   describe('/POST register', () => {
     it('Should return 201 if register is a success', done => {
       chai
         .request(server)
         .post('/api/register')
-        .send({ username: 'Emma', password: '666666' })
+        .send({ username: 'Emma', password: '000000' })
         .end((err, res) => {
+          if (err) {
+            console.log(err);
+            done();
+          }
           res.should.have.status(201);
+
           done();
         });
     });
@@ -46,8 +55,12 @@ describe('User endpoints', () => {
       chai
         .request(server)
         .post('/api/register')
-        .send({ username: 'Emma', password: '666' })
+        .send({ username: 'Emma', password: '000' })
         .end((err, res) => {
+          if (err) {
+            console.log(err);
+            done();
+          }
           res.should.have.status(400);
           res.body.should.be.a('object');
           done();
