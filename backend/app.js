@@ -80,19 +80,45 @@ app.post('/api/login', function(req, res) {
       }
     }
 
-    res.status(400).send("Cannot find any user with this combination of username and password.");
+    res.status(400).send("Username or password is incorrect.");
   });
 
 });
 
 
+/************** GET ALL GAMES **************/
+
+app.get('/api/games', function(req, res) {
+
+});
 
 
+/************** ADD A NEW GAME **************/
+
+app.post('/api/games', function(req, res) {
+
+});
 
 
+/************** ACCEPT/START A GAME **************/
+
+app.post('/api/game/:id', function(req, res) {
+
+});
 
 
+/************** GET A SPECIFIC GAME **************/
 
+app.get('/api/game/:id', function(req, res) {
+
+});
+
+
+/************** MAKE A MOVE IN A GAME **************/
+
+app.post('/api/game/move', function(req, res) {
+
+});
 
 
 http.listen(8000, function() {  
