@@ -11,13 +11,8 @@ app.use(express.json());
 const STORAGE_USERS = './databas/users.json';
 
 /************** REGISTER **************/
-
-function validation(req) {
-  return req.body.username && req.body.password;
-}
-
 app.post('/api/register', function(req, res) {
-  if (!validation(req)) {
+  if (!req.body.username && !req.body.password) {
     res.status(400).end();
     return;
   }
@@ -112,8 +107,8 @@ app.get('/api/game/:id', function(req, res) {});
 
 app.post('/api/game/move', function(req, res) {});
 
-let server = http.listen(8000, function() {
+http.listen(8000, function() {
   console.log('Listening on *:8000');
 });
 
-module.exports = { server, validation };
+module.exports = http;

@@ -1,10 +1,8 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let app = require('../app.js');
+let server = require('../app.js');
 let should = chai.should();
 let fs = require('fs');
-
-let { server, validation } = app;
 
 chai.use(chaiHttp);
 
@@ -47,7 +45,6 @@ describe('User endpoints', () => {
             done();
           }
           res.should.have.status(201);
-
           done();
         });
     });
