@@ -47,7 +47,6 @@ app.post('/api/register', function(req, res) {
       STORAGE_USERS,
       JSON.stringify({ ...users, [+new Date()]: req.body }),
       function(error) {
-        console.log(JSON.stringify({ ...users, [new Date()]: req.body }));
         res.status(201).end();
       }
     );
@@ -57,8 +56,6 @@ app.post('/api/register', function(req, res) {
 /************** LOGIN **************/
 
 app.post('/api/login', function(req, res) {
-  console.log(req.body);
-
   if (!req.body.username && !req.body.password) {
     res.status(400).end();
     return;
