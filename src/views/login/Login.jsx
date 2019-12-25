@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import { updateUser } from '../../Global/store/userStore';
 import { useFormState } from 'react-use-form-state';
+import axios from 'axios';
 import validateUser from '../../Global/functions/validateUser/validateUser';
 import ErrorDisplay from '../../Global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../Global/functions/debounce/debounce';
 import './Login.sass';
 import '../../Global/sass/Theme.sass';
-import { updateUser } from '../../Global/store/userStore';
 
 function Login() {
   const [submit, updateSubmit] = useState(false);
