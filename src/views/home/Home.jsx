@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { user$, updateUser } from '../../Global/store/userStore';
+import { Redirect } from 'react-router-dom';
 
 import './Home.sass';
 function Home() {
+  const [logout, updateLogout] = useState(false);
   const [error, updateError] = useState('');
   const [games, updateGames] = useState([
     'jontahn',
@@ -13,18 +16,29 @@ function Home() {
     'Maurits'
   ]);
 
-  // useEffect(()=>{
-  //   axios.get("").then((response)=>{
-  //     console.log(response.data)
-  //     updateGames(response.data)
-  //   }).catch(error=>{
-  //     console.log(error.response.data)
-  //     updateError(error.response.data)
-  //   })
-  // },[])
+  useEffect(() => {
+    if (user$.value) {
+      // axios
+      //   .get('')
+      //   .then(response => {
+      //     console.log(response.data);
+      //     updateGames(response.data);
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response.data);
+      //     updateError(error.response.data);
+      //   });
+    } else {
+      updateLogout(true);
+    }
+  }, [user$.value]);
 
+  if (logout) return <Redirect to="/login" />;
   return (
     <div className="Home">
+      <button className="Home__logout" onClick={() => updateUser()}>
+        Logout
+      </button>
       <section className="Home__container">
         <nav className="Home__container__nav">
           <button
