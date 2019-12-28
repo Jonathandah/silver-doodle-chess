@@ -8,12 +8,10 @@ const users = require('./databas/users.json');
 
 app.use(cors());
 app.use(express.json());
-
 const STORAGE_USERS = './databas/users.json';
 const STORAGE_GAMES = './databas/games.json';
 
 /************** REGISTER **************/
-
 app.post('/api/register', function(req, res) {
   if (!req.body.username && !req.body.password) {
     res.status(400).end();
@@ -48,11 +46,14 @@ app.post('/api/register', function(req, res) {
       STORAGE_USERS,
       JSON.stringify({ ...users, [+new Date()]: req.body }),
       function(error) {
+<<<<<<< HEAD
         if (error) {
           res.status(500).send('Server Error: Could not create new user');
           return;
         }
 
+=======
+>>>>>>> bbe433fd684170c053da0ee4963c2695cc9a5676
         res.status(201).end();
       }
     );
@@ -62,8 +63,6 @@ app.post('/api/register', function(req, res) {
 /************** LOGIN **************/
 
 app.post('/api/login', function(req, res) {
-  console.log(req.body);
-
   if (!req.body.username && !req.body.password) {
     res.status(400).end();
     return;
