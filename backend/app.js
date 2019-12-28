@@ -46,14 +46,11 @@ app.post('/api/register', function(req, res) {
       STORAGE_USERS,
       JSON.stringify({ ...users, [+new Date()]: req.body }),
       function(error) {
-<<<<<<< HEAD
         if (error) {
           res.status(500).send('Server Error: Could not create new user');
           return;
         }
 
-=======
->>>>>>> bbe433fd684170c053da0ee4963c2695cc9a5676
         res.status(201).end();
       }
     );
