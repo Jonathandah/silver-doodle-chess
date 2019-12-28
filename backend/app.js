@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const STORAGE_USERS = './databas/users.json';
+const STORAGE_GAMES = './databas/games.json';
 
 /************** REGISTER **************/
 
@@ -47,7 +48,11 @@ app.post('/api/register', function(req, res) {
       STORAGE_USERS,
       JSON.stringify({ ...users, [+new Date()]: req.body }),
       function(error) {
-        console.log(JSON.stringify({ ...users, [new Date()]: req.body }));
+        if (error) {
+          res.status(500).send('Server Error: Could not create new user');
+          return;
+        }
+
         res.status(201).end();
       }
     );
@@ -94,11 +99,86 @@ app.post('/api/login', function(req, res) {
 
 /************** GET ALL GAMES **************/
 
-app.get('/api/games', function(req, res) {});
+app.get('/api/games', function(req, res) {
+  fs.readFile(STORAGE_GAMES, function(error, formatedData) {
+    if (error) {
+      res.status(500).send('SERVER ERROR: Could not load games');
+      return;
+    }
+
+    res.status(200).send(JSON.parse(formatedData));
+  });
+});
 
 /************** ADD A NEW GAME **************/
 
-app.post('/api/games', function(req, res) {});
+app.post('/api/games', function(req, res) {
+  let data = req.body;
+
+  // checking header
+  if (!data.header) {
+    res.status(400).send('Missing header.');
+    return;
+  }
+
+  if (typeof data.header !== 'object') {
+    res.status(400).send('Header should be an object.');
+    return;
+  }
+
+  if (!data.header.White || !data.header.Black || !data.header.Date) {
+    res
+      .status(400)
+      .send(
+        'Header should contain the following keys: "White", "Black", "Date"'
+      );
+    return;
+  }
+
+  // checking board
+  if (!data.board) {
+    res.status(400).send('Missing board.');
+    return;
+  }
+
+  if (typeof data.board !== 'string') {
+    res.status(400).send('Board should be a string.');
+    return;
+  }
+
+  // checking owner
+  if (!data.owner) {
+    res.status(400).send('Missing owner.');
+    return;
+  }
+
+  if (typeof data.owner !== 'string') {
+    res.status(400).send('Owner should be a string.');
+    return;
+  }
+
+  fs.readFile(STORAGE_GAMES, function(error, formatedData) {
+    if (error) {
+      res.status(500).send('Server Error: Could not create new game');
+      return;
+    }
+
+    let games = JSON.parse(formatedData);
+
+    fs.writeFile(
+      STORAGE_GAMES,
+      JSON.stringify({ ...games, [+new Date()]: data }),
+      function(error) {
+        if (error) {
+          res.status(500).send('Server Error: Could not create new game');
+          return;
+        }
+
+        res.status(201).end();
+      }
+    );
+  });
+});
 
 /************** ACCEPT/START A GAME **************/
 
