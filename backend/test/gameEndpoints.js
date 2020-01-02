@@ -38,6 +38,11 @@ describe('Game endpoints', () => {
         .post('/api/games')
         .send(game)
         .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
           expect(res).to.have.status(400);
           expect(res.body).to.be.an('object').that.is.empty;
           expect(res.error.text).to.have.lengthOf.gt(0);
@@ -111,8 +116,12 @@ describe('Game endpoints', () => {
         .post('/api/games')
         .send(game)
         .end((err, res) => {
-          expect(res).to.have.status(201);
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
 
+          expect(res).to.have.status(201);
           done();
         });
     });
@@ -124,6 +133,11 @@ describe('Game endpoints', () => {
         .request(server)
         .get('/api/games')
         .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
 

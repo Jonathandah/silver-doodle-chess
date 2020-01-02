@@ -89,7 +89,9 @@ app.post('/api/login', function(req, res) {
         }
       }
     } catch (error) {
-      console.error(error);
+      console.error('app.js - could not parse JSON', error);
+      res.status(500).send('SERVER ERROR: Could not parse JSON');
+      return;
     }
 
     res.status(400).send('Username or password is incorrect.');
@@ -186,7 +188,8 @@ app.post('/api/games', function(req, res) {
         }
       );
     } catch (error) {
-      console.error(error);
+      console.error('app.js - could not parse JSON', error);
+      res.status(500).send('SERVER ERROR: Could not parse JSON');
     }
   });
 });

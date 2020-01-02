@@ -41,9 +41,10 @@ describe('User endpoints', () => {
         .send({ username: 'Emma', password: '000000' })
         .end((err, res) => {
           if (err) {
-            console.log(err);
-            done();
+            console.error('Could not make request', err);
+            done(err);
           }
+
           res.should.have.status(201);
           done();
         });
@@ -55,9 +56,10 @@ describe('User endpoints', () => {
         .send({ username: 'Emma', password: '000' })
         .end((err, res) => {
           if (err) {
-            console.log(err);
-            done();
+            console.error('Could not make request', err);
+            done(err);
           }
+
           res.should.have.status(400);
           res.body.should.be.a('object');
           done();
