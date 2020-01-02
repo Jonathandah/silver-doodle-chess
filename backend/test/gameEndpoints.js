@@ -10,6 +10,8 @@ chai.use(chaiHttp);
 
 // Testing game endpoints
 describe('Game endpoints', () => {
+  let gameID;
+
   // remove all content from games.json before and after tests
   before(() => {
     fs.writeFile('./databas/games.json', JSON.stringify({}), error => {
@@ -143,6 +145,8 @@ describe('Game endpoints', () => {
 
           if (Object.keys(res.body).length) {
             for (const key in res.body) {
+              gameID = key;
+
               expect(res.body[key]).to.include.all.keys([
                 'header',
                 'board',
@@ -161,10 +165,105 @@ describe('Game endpoints', () => {
     });
   });
 
-  /* describe('POST /api/games/:gameID', () => {
+  describe('POST /api/games/:gameID', () => {
     describe('should return status 400', () => {
-      it()
-    })
-    
-  }) */
+      it('missing username', done => {
+        chai
+          .request(server)
+          .post(`/api/games/${gameID}`)
+          .send({ player: 'yaro' })
+          .end((err, res) => {
+            if (err) {
+              console.error('Could not make request', err);
+              done(err);
+            }
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object').that.is.empty;
+            expect(res.error.text).to.have.lengthOf.gt(0);
+
+            done();
+          });
+      });
+
+      it('username incorrect content', done => {
+        chai
+          .request(server)
+          .post(`/api/games/${gameID}`)
+          .send({ username: 1234 })
+          .end((err, res) => {
+            if (err) {
+              console.error('Could not make request', err);
+              done(err);
+            }
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object').that.is.empty;
+            expect(res.error.text).to.have.lengthOf.gt(0);
+
+            done();
+          });
+      });
+    });
+
+    it('should return 200 and a updated game', done => {
+      chai
+        .request(server)
+        .post(`/api/games/${gameID}`)
+        .send({ username: 'Emma' })
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.not.empty;
+
+          for (const key in res.body) {
+            expect(res.body[key])
+              .to.be.an('object')
+              .that.includes.all.keys(['header', 'board', 'owner']);
+            expect(res.body[key].header)
+              .to.be.an('object')
+              .that.includes.all.keys(['White', 'Black', 'Date']);
+            expect(res.body[key].board).to.be.a('string');
+            expect(res.body[key].owner).to.be.a('string');
+          }
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/games/:gameID', () => {
+    it('this should return game for specific gameID', done => {
+      chai
+        .request(server)
+        .get(`/api/games/${gameID}`)
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.not.empty;
+
+          for (const key in res.body) {
+            expect(res.body[key]).to.includes.all.keys([
+              'header',
+              'board',
+              'owner'
+            ]);
+            expect(res.body[key].header)
+              .to.be.an('object')
+              .that.includes.all.keys(['White', 'Black', 'Date']);
+            expect(res.body[key].board).to.be.a('string');
+            expect(res.body[key].owner).to.be.a('string');
+          }
+
+          done();
+        });
+    });
+  });
 });
