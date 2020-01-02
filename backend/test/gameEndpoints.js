@@ -10,6 +10,8 @@ chai.use(chaiHttp);
 
 // Testing game endpoints
 describe('Game endpoints', () => {
+  let gameID;
+
   // remove all content from games.json before and after tests
   before(() => {
     fs.writeFile('./databas/games.json', JSON.stringify({}), error => {
@@ -38,6 +40,11 @@ describe('Game endpoints', () => {
         .post('/api/games')
         .send(game)
         .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
           expect(res).to.have.status(400);
           expect(res.body).to.be.an('object').that.is.empty;
           expect(res.error.text).to.have.lengthOf.gt(0);
@@ -49,7 +56,7 @@ describe('Game endpoints', () => {
     // reset header, board, owner
     beforeEach(() => {
       game = {
-        header: { White: 'player_1', Black: 'player_2', Date: '2019-??-??' },
+        header: { White: 'player_1', Black: null, Date: '2019-??-??' },
         board: 'test',
         owner: 'Yaro'
       };
@@ -111,8 +118,12 @@ describe('Game endpoints', () => {
         .post('/api/games')
         .send(game)
         .end((err, res) => {
-          expect(res).to.have.status(201);
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
 
+          expect(res).to.have.status(201);
           done();
         });
     });
@@ -124,11 +135,18 @@ describe('Game endpoints', () => {
         .request(server)
         .get('/api/games')
         .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
 
           if (Object.keys(res.body).length) {
             for (const key in res.body) {
+              gameID = key;
+
               expect(res.body[key]).to.include.all.keys([
                 'header',
                 'board',
@@ -141,6 +159,157 @@ describe('Game endpoints', () => {
               expect(res.body[key].owner).to.be.a('string');
             }
           }
+
+          done();
+        });
+    });
+  });
+
+  describe('POST /api/games/:gameID/join', () => {
+    describe('should return status 400', () => {
+      it('missing username', done => {
+        chai
+          .request(server)
+          .post(`/api/games/${gameID}/join`)
+          .send({ player: 'yaro' })
+          .end((err, res) => {
+            if (err) {
+              console.error('Could not make request', err);
+              done(err);
+            }
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object').that.is.empty;
+            expect(res.error.text).to.have.lengthOf.gt(0);
+
+            done();
+          });
+      });
+
+      it('username incorrect content', done => {
+        chai
+          .request(server)
+          .post(`/api/games/${gameID}/join`)
+          .send({ username: 1234 })
+          .end((err, res) => {
+            if (err) {
+              console.error('Could not make request', err);
+              done(err);
+            }
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object').that.is.empty;
+            expect(res.error.text).to.have.lengthOf.gt(0);
+
+            done();
+          });
+      });
+    });
+
+    it('should return 200 and a updated game', done => {
+      chai
+        .request(server)
+        .post(`/api/games/${gameID}/join`)
+        .send({ username: 'Emma' })
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.not.empty;
+
+          for (const key in res.body) {
+            expect(res.body[key])
+              .to.be.an('object')
+              .that.includes.all.keys(['header', 'board', 'owner']);
+            expect(res.body[key].header)
+              .to.be.an('object')
+              .that.includes.all.keys(['White', 'Black', 'Date']);
+            expect(res.body[key].board).to.be.a('string');
+            expect(res.body[key].owner).to.be.a('string');
+          }
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/games/:gameID', () => {
+    it('this should return game for specific gameID', done => {
+      chai
+        .request(server)
+        .get(`/api/games/${gameID}`)
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.not.empty;
+
+          for (const key in res.body) {
+            expect(res.body[key]).to.includes.all.keys([
+              'header',
+              'board',
+              'owner'
+            ]);
+            expect(res.body[key].header)
+              .to.be.an('object')
+              .that.includes.all.keys(['White', 'Black', 'Date']);
+            expect(res.body[key].board).to.be.a('string');
+            expect(res.body[key].owner).to.be.a('string');
+          }
+
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/games/my_games/:userName', () => {
+    it('this should return all games for specific user', done => {
+      chai
+        .request(server)
+        .get('/api/games/my_games/Emma')
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.not.empty;
+
+          for (const key in res.body) {
+            expect(res.body[key]).to.includes.all.keys([
+              'header',
+              'board',
+              'owner'
+            ]);
+            expect(res.body[key].header)
+              .to.be.an('object')
+              .that.includes.all.keys(['White', 'Black', 'Date']);
+            expect(res.body[key].board).to.be.a('string');
+            expect(res.body[key].owner).to.be.a('string');
+          }
+
+          done();
+        });
+    });
+
+    it('this should return empty object', done => {
+      chai
+        .request(server)
+        .get('/api/games/my_games/Yaro')
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.empty;
 
           done();
         });
