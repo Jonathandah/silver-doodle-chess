@@ -244,7 +244,27 @@ app.post('/api/games/:id', function(req, res) {
 });
 /************** GET A SPECIFIC GAME **************/
 
-app.get('/api/games/:id', function(req, res) {});
+app.get('/api/games/:id', function(req, res) {
+  const gameID = req.params.id;
+
+  fs.readFile(STORAGE_GAMES, function(error, formatedData) {
+    if (error) {
+      console.error('Could not read file', error);
+      res.status(500).send('SERVER ERROR: Could not read file');
+      return;
+    }
+
+    try {
+      let games = JSON.parse(formatedData);
+
+      res.status(200).send({ [gameID]: games[gameID] });
+    } catch (error) {
+      console.error('Could not parse JSON', error);
+      res.status(500).send('SERVER ERROR: Could not parse JSON');
+      return;
+    }
+  });
+});
 
 /************** MAKE A MOVE IN A GAME **************/
 
