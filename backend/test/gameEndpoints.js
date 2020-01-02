@@ -165,12 +165,12 @@ describe('Game endpoints', () => {
     });
   });
 
-  describe('POST /api/games/:gameID', () => {
+  describe('POST /api/games/:gameID/join', () => {
     describe('should return status 400', () => {
       it('missing username', done => {
         chai
           .request(server)
-          .post(`/api/games/${gameID}`)
+          .post(`/api/games/${gameID}/join`)
           .send({ player: 'yaro' })
           .end((err, res) => {
             if (err) {
@@ -189,7 +189,7 @@ describe('Game endpoints', () => {
       it('username incorrect content', done => {
         chai
           .request(server)
-          .post(`/api/games/${gameID}`)
+          .post(`/api/games/${gameID}/join`)
           .send({ username: 1234 })
           .end((err, res) => {
             if (err) {
@@ -209,7 +209,7 @@ describe('Game endpoints', () => {
     it('should return 200 and a updated game', done => {
       chai
         .request(server)
-        .post(`/api/games/${gameID}`)
+        .post(`/api/games/${gameID}/join`)
         .send({ username: 'Emma' })
         .end((err, res) => {
           if (err) {

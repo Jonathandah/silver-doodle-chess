@@ -196,7 +196,7 @@ app.post('/api/games', function(req, res) {
 
 /************** ACCEPT/START A GAME **************/
 
-app.post('/api/games/:id', function(req, res) {
+app.post('/api/games/:id/join', function(req, res) {
   let data = req.body;
 
   if (!data.username) {
