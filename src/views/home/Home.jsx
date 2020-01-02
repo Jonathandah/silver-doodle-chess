@@ -4,57 +4,26 @@ import { user$, updateUser } from '../../global/store/userStore';
 import { Redirect } from 'react-router-dom';
 import PopUp from "../../global/components/popUp/PopUp"
 import './Home.sass';
-
-let testData = {
-
-  1: {
-    header: { black: null, white: "Yaro" },
-    board: "1",
-    owner: "Yaro"
-  },
-
-  2: {
-    header: { black: "Emma", white: "Yaro" },
-    board: "2",
-    owner: "Emma"
-  },
-
-  3: {
-    header: { black: "Joanna", white: null },
-    board: "3",
-    owner: "Joanna"
-  },
-
-  4: {
-    header: { black: "Jonathan", white: "Joanna" },
-    board: "4",
-    owner: "Jonathan"
-  },
-
-}
-
+// const mockData = require("../../global/mocked/mocked_data");
 
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false })
   const [logout, updateLogout] = useState(false);
   const [error, updateError] = useState('');
-  const [games, updateGames] = useState(testData);
+  const [games, updateGames] = useState({});
 
   useEffect(() => {
 
-
-
-
-    // axios
-    //   .get('')
-    //   .then(response => {
-    //     console.log(response.data);
-    //     updateGames(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error.response.data);
-    //     updateError(error.response.data);
-    //   });
+    axios
+      .get('/')
+      .then(response => {
+        console.log("response is", response)
+        updateGames(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+        updateError(error.response.data);
+      });
 
   }, []);
 
@@ -64,15 +33,16 @@ function Home() {
   if (logout) {
     updateUser()
     return <Redirect to="/login" />;
+  } else if (!user$.value) {
+    // return <Redirect to="/login" />;
   }
-
-
+  console.log("render")
   return (
 
     <div className="Home">
       {
-        showPopUp.join ?
-          <PopUp game={showPopUp.join} updateShowPopUp={updateShowPopUp} />
+        showPopUp.join || showPopUp.create ?
+          <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
           :
           null
       }
@@ -98,7 +68,7 @@ function Home() {
               <li className="Home__container__list__item" key={index} >
                 <p className="Home__container__list__item__owner" >{game.owner}</p>
                 {
-                  !game.header.black || !game.header.white ?
+                  !game.header.Black || !game.header.White ?
                     <button className="Home__container__list__item__button" onClick={() => updateShowPopUp({ ...showPopUp, join: game })} >Join</button> : null
                 }
               </li>
@@ -110,7 +80,7 @@ function Home() {
         <button className="Home__nav__logout" onClick={() => updateLogout(true)}>
           Logout
       </button>
-        <button className="Home__nav__create">Create Game</button>
+        <button className="Home__nav__create" onClick={() => updateShowPopUp({ ...showPopUp, create: true })}>Create Game</button>
       </nav>
 
 
