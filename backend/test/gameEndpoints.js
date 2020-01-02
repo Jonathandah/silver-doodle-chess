@@ -54,7 +54,7 @@ describe('Game endpoints', () => {
     // reset header, board, owner
     beforeEach(() => {
       game = {
-        header: { White: 'player_1', Black: 'player_2', Date: '2019-??-??' },
+        header: { White: 'player_1', Black: null, Date: '2019-??-??' },
         board: 'test',
         owner: 'Yaro'
       };
@@ -160,4 +160,11 @@ describe('Game endpoints', () => {
         });
     });
   });
+
+  /* describe('POST /api/games/:gameID', () => {
+    describe('should return status 400', () => {
+      it()
+    })
+    
+  }) */
 });
