@@ -1,7 +1,6 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../app.js');
-
 let fs = require('fs');
 
 const { expect } = chai;
@@ -264,6 +263,48 @@ describe('Game endpoints', () => {
 
           done();
         });
+    });
+  });
+
+  describe('POST /api/games/:gameID/move', () => {
+    describe('should return status 400', () => {
+      it('missing board', done => {
+        chai
+          .request(server)
+          .post(`/api/games/${gameID}/move`)
+          .send({ board: null })
+          .end((err, res) => {
+            if (err) {
+              console.error('Could not make request', err);
+              done(err);
+            }
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object').that.is.empty;
+            expect(res.error.text).to.have.lengthOf.gt(0);
+
+            done();
+          });
+      });
+
+      it('board incorrect content', done => {
+        chai
+          .request(server)
+          .post(`/api/games/${gameID}/move`)
+          .send({ board: 1234 })
+          .end((err, res) => {
+            if (err) {
+              console.error('Could not make request', err);
+              done(err);
+            }
+
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object').that.is.empty;
+            expect(res.error.text).to.have.lengthOf.gt(0);
+
+            done();
+          });
+      });
     });
   });
 

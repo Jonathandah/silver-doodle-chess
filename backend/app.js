@@ -300,7 +300,49 @@ app.get('/api/games/my_games/:userName', function(req, res) {
 });
 
 /************** MAKE A MOVE IN A GAME **************/
-app.post('/api/games/:id/move', function(req, res) {});
+app.post('/api/games/:id/move', function(req, res) {
+  let { board } = req.body;
+
+  if (!board) {
+    res.status(400).send('Missing board');
+    return;
+  }
+
+  if (typeof board !== 'string') {
+    res.status(400).send('board should be a string');
+    return;
+  }
+
+  fs.readFile(STORAGE_GAMES, function(error, formatedData) {
+    if (error) {
+      console.error('Could not read file', error);
+      res.status(500).send('SERVER ERROR: Could not read file');
+      return;
+    }
+
+    try {
+      let games = JSON.parse(formatedData);
+      let { id } = req.params;
+
+      games[id].board = board;
+
+      fs.writeFile(STORAGE_GAMES, JSON.stringify(games), function(error) {
+        if (error) {
+          console.error('Could not write file', error);
+          res.status(500).send('SERVER ERROR: Could not write file');
+          return;
+        }
+
+        io.emit('new_move', { board });
+        res.end();
+      });
+    } catch (error) {
+      console.error('Could not parse JSON', error);
+      res.status(500).send('SERVER ERROR: Could not parse JSON');
+      return;
+    }
+  });
+});
 
 http.listen(8000, function() {
   console.log('Listening on *:8000');
