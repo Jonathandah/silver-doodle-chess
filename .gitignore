@@ -1,6 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+<<<<<<< HEAD
+
+# backend node_module ignored
+/backend/node_modules
+
+=======
 node_modules*
+>>>>>>> develop
 # dependencies
 /node_modules/
 /.pnp

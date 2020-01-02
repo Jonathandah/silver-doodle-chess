@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import { updateUser } from '../../Global/store/userStore';
 import { useFormState } from 'react-use-form-state';
+import axios from 'axios';
 import validateUser from '../../Global/functions/validateUser/validateUser';
 import ErrorDisplay from '../../Global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../Global/functions/debounce/debounce';
 import './Login.sass';
+import '../../Global/sass/Theme.sass';
 
 function Login() {
+  const [submit, updateSubmit] = useState(false);
   const [formState, { text, password }] = useFormState();
   const [errors, updateErrors] = useState({});
 
@@ -16,16 +19,39 @@ function Login() {
 
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
-      return <Redirect to="/" />;
+
+      axios
+        .post('/api/login', formState.values)
+        .then(response => {
+          updateUser(Object.values(response.data)[0].username);
+          updateSubmit(true);
+        })
+        .catch(error => {
+          console.error(error.response.data);
+        });
+      // fetch('/api/login', {
+      //   method: 'POST',
+      //   body: JSON.stringify(formState.values)
+      // })
+      //   .then(response => {
+      //     console.log(response);
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
     } else {
       updateErrors(validateUser(formState.values));
     }
   }
 
+  if (submit === true) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <div className="Login">
-      <section className="Login__section">
-        <h2>Login</h2>
+      <section className="Login__section light__purple">
+        <h2 className="white">Login</h2>
         <Link className="Login__section__link--register" to="/register">
           Not yet registered?
         </Link>
@@ -51,8 +77,8 @@ function Login() {
             })}
             required
           />
-          {errors.password ? (
-            <ErrorDisplay errorMessage={errors.password} />
+          {errors.password || errors.catch ? (
+            <ErrorDisplay errorMessage={errors.password || errors.catch} />
           ) : null}
 
           <button type="Submit">Login</button>
