@@ -266,4 +266,53 @@ describe('Game endpoints', () => {
         });
     });
   });
+
+  describe('GET /api/games/my_games/:userName', () => {
+    it('this should return all games for specific user', done => {
+      chai
+        .request(server)
+        .get('/api/games/my_games/Emma')
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.not.empty;
+
+          for (const key in res.body) {
+            expect(res.body[key]).to.includes.all.keys([
+              'header',
+              'board',
+              'owner'
+            ]);
+            expect(res.body[key].header)
+              .to.be.an('object')
+              .that.includes.all.keys(['White', 'Black', 'Date']);
+            expect(res.body[key].board).to.be.a('string');
+            expect(res.body[key].owner).to.be.a('string');
+          }
+
+          done();
+        });
+    });
+
+    it('this should return empty object', done => {
+      chai
+        .request(server)
+        .get('/api/games/my_games/Yaro')
+        .end((err, res) => {
+          if (err) {
+            console.error('Could not make request', err);
+            done(err);
+          }
+
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object').that.is.empty;
+
+          done();
+        });
+    });
+  });
 });

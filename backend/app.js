@@ -195,7 +195,6 @@ app.post('/api/games', function(req, res) {
 });
 
 /************** ACCEPT/START A GAME **************/
-
 app.post('/api/games/:id/join', function(req, res) {
   let data = req.body;
 
@@ -242,8 +241,8 @@ app.post('/api/games/:id/join', function(req, res) {
     }
   });
 });
-/************** GET A SPECIFIC GAME **************/
 
+/************** GET A SPECIFIC GAME **************/
 app.get('/api/games/:id', function(req, res) {
   const gameID = req.params.id;
 
@@ -266,8 +265,41 @@ app.get('/api/games/:id', function(req, res) {
   });
 });
 
-/************** MAKE A MOVE IN A GAME **************/
+/************** GET ALL GAME FOR SPECIFIC USER **************/
+app.get('/api/games/my_games/:userName', function(req, res) {
+  let username = req.params.userName;
 
+  fs.readFile(STORAGE_GAMES, function(error, formatedData) {
+    if (error) {
+      console.error('Could not read file', error);
+      res.status(500).send('SERVER ERROR: Could not read file');
+      return;
+    }
+
+    try {
+      let games = JSON.parse(formatedData);
+
+      let userGames = {};
+
+      for (let id in games) {
+        let { header } = games[id];
+
+        if (header.White === username || header.Black === username) {
+          userGames[id] = games[id];
+        }
+      }
+
+      res.status(200).send(userGames);
+      return;
+    } catch (error) {
+      console.error('Could not parse JSON', error);
+      res.status(500).send('SERVER ERROR: Could not parse JSON');
+      return;
+    }
+  });
+});
+
+/************** MAKE A MOVE IN A GAME **************/
 app.post('/api/games/:id/move', function(req, res) {});
 
 http.listen(8000, function() {
