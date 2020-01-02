@@ -35,7 +35,7 @@ let testData = {
 
 
 function Home() {
-  const [showPopUp, updateShowPopUp] = useState(false)
+  const [showPopUp, updateShowPopUp] = useState({ join: false, create: false })
   const [logout, updateLogout] = useState(false);
   const [error, updateError] = useState('');
   const [games, updateGames] = useState(testData);
@@ -71,44 +71,49 @@ function Home() {
 
     <div className="Home">
       {
-        showPopUp ?
-          <PopUp game={showPopUp} updateShowPopUp={updateShowPopUp} />
+        showPopUp.join ?
+          <PopUp game={showPopUp.join} updateShowPopUp={updateShowPopUp} />
           :
-          <>
-            <button className="Home__logout" onClick={() => updateLogout(true)}>
-              Logout
-      </button>
-            <section className="Home__container">
-              <nav className="Home__container__nav">
-                <button
-                  className="Home__container__nav__tab"
-                  onClick={e => console.log(e.target.value)}
-                >
-                  My Games
-          </button>
-                <button
-                  className="Home__container__nav__tab"
-                  onClick={e => console.log(e.target.value)}
-                >
-                  All Games
-          </button>
-              </nav>
-              <ul className="Home__container__list">
-                {Object.values(games).map((game, index) => {
-                  return (
-                    <li className="Home__container__list__item" key={index} >
-                      <p className="Home__container__list__item__owner" >{game.owner}</p>
-                      {
-                        !game.header.black || !game.header.white ?
-                          <button className="Home__container__list__item__button" onClick={() => showPopUp ? updateShowPopUp(false) : updateShowPopUp(game)} >Join</button> : null
-                      }
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          </>
+          null
       }
+
+      <section className="Home__container">
+        <nav className="Home__container__nav">
+          <button
+            className="Home__container__nav__tab"
+            onClick={e => console.log(e.target.value)}
+          >
+            My Games
+          </button>
+          <button
+            className="Home__container__nav__tab"
+            onClick={e => console.log(e.target.value)}
+          >
+            All Games
+          </button>
+        </nav>
+        <ul className="Home__container__list">
+          {Object.values(games).map((game, index) => {
+            return (
+              <li className="Home__container__list__item" key={index} >
+                <p className="Home__container__list__item__owner" >{game.owner}</p>
+                {
+                  !game.header.black || !game.header.white ?
+                    <button className="Home__container__list__item__button" onClick={() => updateShowPopUp({ ...showPopUp, join: game })} >Join</button> : null
+                }
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+      <nav className="Home__nav">
+        <button className="Home__nav__logout" onClick={() => updateLogout(true)}>
+          Logout
+      </button>
+        <button className="Home__nav__create">Create Game</button>
+      </nav>
+
+
     </div>
   );
 }
