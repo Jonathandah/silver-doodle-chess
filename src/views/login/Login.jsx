@@ -23,13 +23,11 @@ function Login() {
       axios
         .post('/api/login', formState.values)
         .then(response => {
-          console.log(Object.values(response.data)[0].username);
           updateUser(Object.values(response.data)[0].username);
           updateSubmit(true);
         })
         .catch(error => {
-          console.log(error.response.data);
-          updateErrors({ catch: error.response.data });
+          console.error(error.response.data);
         });
       // fetch('/api/login', {
       //   method: 'POST',

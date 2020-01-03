@@ -16,19 +16,16 @@ function Register() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formState.values);
-
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
       axios
         .post('/api/register', formState.values)
         .then(response => {
-          console.log(response);
           updateSubmit(true);
         })
         .catch(error => {
-          console.log(error.response.data);
-          updateErrors({ catch: error.response.data });
+          console.error(error.response.data);
+
         });
     } else {
       updateErrors(validateUser(formState.values));

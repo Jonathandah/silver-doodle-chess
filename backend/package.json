@@ -1,12 +1,16 @@
 {
   "dependencies": {
-    "chai": "^4.2.0",
-    "chess.js": "^0.10.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mocha": "^6.2.2",
-    "nodemon": "^2.0.2",
     "socket.io": "^2.3.0"
   },
-  "proxy": "http://localhost:8000"
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^2.0.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
 }
