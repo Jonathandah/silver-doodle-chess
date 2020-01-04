@@ -68,7 +68,7 @@ app.post('/api/login', function(req, res) {
     res
       .status(400)
       .send(
-        'Username must contain atleast 4 characters and password must have minimum 6 characters.'
+        {message: 'Username must contain atleast 4 characters and password must have minimum 6 characters.'}
       );
     return;
   }

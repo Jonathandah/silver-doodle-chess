@@ -19,17 +19,38 @@ describe('User endpoints', () => {
   });
 
   describe('/POST login', () => {
-    it('it should return status 400 if password or username are incorrect', done => {
+    it('should return 400 if username or password are empty', done => {
       chai
         .request(server)
         .post('/api/login')
-        .send({ username: 'yaro', password: '123456' })
+        .send({})
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.be.a('object');
           done();
-        });
+        })
     });
+    it('should return 400 if username is not atleast 4 characters or password is not atleast 6 characters', done => {
+      chai
+        .request(server)
+        .post('/api/login')
+        .send({username: 'jo', password: '123'})
+        .end((err, res) => {
+          res.should.have.status(400)
+          res.body.should.equal({message: 'Username must contain atleast 4 characters and password must have minimum 6 characters.'})
+          done();
+        })
+    })
+    // it('it should return status 400 if password or username are incorrect', done => {
+    //   chai
+    //     .request(server)
+    //     .post('/api/login')
+    //     .send({ username: 'yaro', password: '123456' })
+    //     .end((err, res) => {
+    //       res.should.have.status(400);
+    //       res.body.should.be.a('object');
+    //       done();
+    //     });
+    // });
   });
 
   //   REGISTER TEST
