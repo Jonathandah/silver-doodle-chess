@@ -94,7 +94,7 @@ app.post('/api/login', function(req, res) {
       return;
     }
 
-    res.status(400).send('Username or password is incorrect.');
+    res.status(400).send({message: 'Username or password is incorrect.'});
   });
 });
 
