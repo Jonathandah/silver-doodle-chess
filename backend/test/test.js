@@ -30,11 +30,22 @@ describe('User endpoints', () => {
           done();
         })
     });
-    it('should return 400 if username is not atleast 4 characters or password is not atleast 6 characters', done => {
+    it('should return 400 if username is not atleast 4 characters', done => {
       chai
         .request(server)
         .post('/api/login')
-        .send({username: 'jo', password: '123'})
+        .send({username: 'jo', password: '123456'})
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.deep.equal({message: 'Username must contain atleast 4 characters and password must have minimum 6 characters.'});
+          done();
+        })
+    });
+    it('should return 400 if password is not atleast 6 characters', done => {
+      chai
+        .request(server)
+        .post('/api/login')
+        .send({username: 'joanna', password: '123'})
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.deep.equal({message: 'Username must contain atleast 4 characters and password must have minimum 6 characters.'});
