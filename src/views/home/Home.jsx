@@ -33,7 +33,7 @@ function Home() {
     updateUser();
     return <Redirect to="/login" />;
   } else if (!user$.value) {
-    // return <Redirect to="/login" />;
+    return <Redirect to="/login" />;
   }
 
   return (

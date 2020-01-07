@@ -2,11 +2,14 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Home from '../views/home/Home';
 import axios from 'axios';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import jest from 'jest-mock';
 import mocked_data from '../Global/mocked/mocked_data';
+const UserStore = require('../global/store/userStore')
+import Home from '../views/home/Home';
+import { BehaviorSubject } from 'rxjs';
 
 // Make sure to resolve with a promise
 
@@ -21,6 +24,8 @@ beforeEach(() => {
             resolve({ data: mocked_data });
         });
     });
+    UserStore.user$ = new BehaviorSubject("test");
+
 });
 
 describe('Test Home components renders ', () => {
@@ -32,12 +37,14 @@ describe('Test Home components renders ', () => {
 describe('Render games in home component', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(<Home />);
+        wrapper = mount(<Router><Home /></Router>);
     });
     it('Excpects 4 list elements', done => {
+        //expect(localStorage.getItem.mock.calls.length).to.equal(1);
         expect(
             wrapper.update().find('.Home__container__list__item')
         ).to.have.lengthOf(4);
+
 
         done();
     });
