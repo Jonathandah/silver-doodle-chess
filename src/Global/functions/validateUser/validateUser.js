@@ -6,7 +6,7 @@ export default function validateUser(userData) {
   // let alphanumeric = /^(?=.*[a-zA-ZåäöÅÄÖ])(?=.*[0-9])/;
   // let letters = /^[A-zöåäÖÅÄ\s]*$/;
 
-  if (userData.username.length > 4) {
+  if (userData.username.length >= 4) {
     delete errors.username;
   } else {
     errors = {
@@ -15,7 +15,7 @@ export default function validateUser(userData) {
     };
   }
 
-  if (userData.password.length > 6) {
+  if (userData.password.length >= 6) {
     delete errors.password;
   } else {
     errors = {
