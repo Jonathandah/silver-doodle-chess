@@ -6,12 +6,14 @@ import PopUp from '../../global/components/popUp/PopUp';
 import './Home.sass';
 import Game from './Game';
 import Filters from './Filters';
+import GameBoard from '../game/GameBoard';
 // const mockData = require("../../global/mocked/mocked_data");
 
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
   const [logout, updateLogout] = useState(false);
   const [games, updateGames] = useState({ filter: 'All Games', data: {} });
+  const [gameBoard, updateGameBoard] = useState(false);
 
   useEffect(() => {
     axios
@@ -21,7 +23,6 @@ function Home() {
           : '/api/games'
       )
       .then(response => {
-        console.log(response.data);
         updateGames({ ...games, data: response.data });
       })
       .catch(error => {
@@ -48,13 +49,12 @@ function Home() {
       ) : null}
 
       <section className="Home__container">
-        <Filters games={games} updateGames={updateGames} />
-
         <ul className="Home__container__list">
           {Object.values(games.data).length > 0
             ? Object.values(games.data).map((game, index) => {
                 return (
                   <Game
+                    updateGameBoard={updateGameBoard}
                     game={game}
                     games={games}
                     index={index}

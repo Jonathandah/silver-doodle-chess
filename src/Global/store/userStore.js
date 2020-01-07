@@ -1,10 +1,10 @@
-import { BehaviorSubject } from './node_modules/rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export const user$ = new BehaviorSubject(
   window.localStorage.getItem('user') || null
 );
 
-export function updateUser(newUser) {
+export function updateUser(newUser = null) {
   if (!newUser) {
     window.localStorage.removeItem('user');
   } else {
