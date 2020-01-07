@@ -4,7 +4,7 @@ import { updateUser } from '../../global/store/userStore';
 import { useFormState } from 'react-use-form-state';
 import axios from 'axios';
 import validateUser from '../../global/functions/validateUser/validateUser';
-import ErrorDisplay from "../../global/components/errorDisplay/ErrorDisplay"
+import ErrorDisplay from '../../global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../global/functions/debounce/debounce';
 import './Login.sass';
 import '../../global/sass/Theme.sass';
@@ -23,13 +23,11 @@ function Login() {
       axios
         .post('/api/login', formState.values)
         .then(response => {
-          console.log(Object.values(response.data)[0].username);
           updateUser(Object.values(response.data)[0].username);
           updateSubmit(true);
         })
         .catch(error => {
-          console.log(error.response.data);
-          updateErrors({ catch: error.response.data });
+          console.error(error.response.data);
         });
       // fetch('/api/login', {
       //   method: 'POST',

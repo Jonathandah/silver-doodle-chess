@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useFormState } from 'react-use-form-state';
 import validateUser from '../../global/functions/validateUser/validateUser';
-import ErrorDisplay from "../../global/components/errorDisplay/ErrorDisplay"
+import ErrorDisplay from '../../global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../global/functions/debounce/debounce';
 import './Register.sass';
 import '../../global/sass/Theme.sass';
@@ -16,19 +16,15 @@ function Register() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formState.values);
-
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
       axios
         .post('/api/register', formState.values)
         .then(response => {
-          console.log(response);
           updateSubmit(true);
         })
         .catch(error => {
-          console.log(error.response.data);
-          updateErrors({ catch: error.response.data });
+          console.error(error.response.data);
         });
     } else {
       updateErrors(validateUser(formState.values));
