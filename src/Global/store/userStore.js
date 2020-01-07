@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from './node_modules/rxjs';
 
 export const user$ = new BehaviorSubject(
   window.localStorage.getItem('user') || null

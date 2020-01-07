@@ -4,7 +4,7 @@ import { updateUser } from '../../global/store/userStore';
 import { useFormState } from 'react-use-form-state';
 import axios from 'axios';
 import validateUser from '../../global/functions/validateUser/validateUser';
-import ErrorDisplay from "../../global/components/errorDisplay/ErrorDisplay"
+import ErrorDisplay from '../../global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../global/functions/debounce/debounce';
 import './Login.sass';
 import '../../global/sass/Theme.sass';
