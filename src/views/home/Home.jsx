@@ -4,6 +4,7 @@ import { user$, updateUser } from '../../global/store/userStore';
 import { Redirect } from 'react-router-dom';
 import PopUp from "../../global/components/popUp/PopUp"
 import './Home.sass';
+import Game from "./Game"
 // const mockData = require("../../global/mocked/mocked_data");
 
 function Home() {
@@ -64,14 +65,11 @@ function Home() {
         </nav>
         <ul className="Home__container__list">
           {Object.values(games).map((game, index) => {
+            console.log(game)
+
             return (
-              <li className="Home__container__list__item" key={index} >
-                <p className="Home__container__list__item__owner" >{game.owner}</p>
-                {
-                  !game.header.Black || !game.header.White ?
-                    <button className="Home__container__list__item__button" onClick={() => updateShowPopUp({ ...showPopUp, join: game })} >Join</button> : null
-                }
-              </li>
+              <Game game={game} index={index} showPopUp={showPopUp} updateShowPopUp={updateShowPopUp} />
+
             );
           })}
         </ul>

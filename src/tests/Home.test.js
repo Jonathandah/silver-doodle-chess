@@ -35,28 +35,12 @@ describe("Render games in home component", () => {
     beforeEach(() => {
         wrapper = mount(<Home />)
     })
-    it("send in correct data", (done) => {
+    it("Send in correct data", (done) => {
         expect(wrapper.update().find(".Home__container__list__item")).to.have.lengthOf(4)
         done();
         // axios.get.mockImplementation(() => Promise.resolve({ mocked_data }))
 
     })
-
-
-    it("send in bad data", () => {
-
-
-        // axios.get = jest.fn(() => {
-        //     // const url = axios.get.mock.calls[0][0]
-        //     return new Promise((resolve, reject) => {
-        //         resolve({ data: "hehejahbjbh" })
-        //     })
-        // })
-
-        console.log(wrapper.find(".Home__container__list__item").length)
-
-    })
-
 
 })
 
