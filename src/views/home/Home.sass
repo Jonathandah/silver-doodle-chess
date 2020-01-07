@@ -1,0 +1,47 @@
+.Home
+    position: relative
+    width: 100%
+    height: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    .Home__nav
+        display: flex
+    .Home__container
+        position: relative
+        width: 80%
+        height: 70%
+        background: grey
+        .Home__container__nav
+            position: absolute
+            width: 100%
+            height: 3%
+            background: red
+            top: -3%
+            display: flex
+            align-items: center
+            justify-content: center
+            flex-direction: row
+            .Home__container__nav__tab
+                width: 50%
+                height: 100%
+        .Home__container__list
+            list-style: none
+            list-style-type: none
+            padding: 0
+            .Home__container__list__item
+                height: 5vh
+                display: flex
+                align-items: center
+                justify-content: space-between
+                background: white
+                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+                .Home__container__list__item__button
+                    margin: 2vh
+                    &:hover
+                        background: #2612dd54
+                        cursor: pointer
+                        border-radius: 3px
+                .Home__container__list__item__owner
+                    margin: 2vh

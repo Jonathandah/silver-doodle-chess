@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useFormState } from 'react-use-form-state';
-import validateUser from '../../Global/functions/validateUser/validateUser';
-import ErrorDisplay from '../../Global/components/errorDisplay/ErrorDisplay';
-import debounce from '../../Global/functions/debounce/debounce';
+import validateUser from '../../global/functions/validateUser/validateUser';
+import ErrorDisplay from '../../global/components/errorDisplay/ErrorDisplay';
+import debounce from '../../global/functions/debounce/debounce';
 import './Register.sass';
-import '../../Global/sass/Theme.sass';
+import '../../global/sass/Theme.sass';
 
 function Register() {
   const [submit, updateSubmit] = useState(false);
@@ -25,7 +25,6 @@ function Register() {
         })
         .catch(error => {
           console.error(error.response.data);
-
         });
     } else {
       updateErrors(validateUser(formState.values));
