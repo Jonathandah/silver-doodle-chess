@@ -9,7 +9,7 @@ const Game = ({ games, game, showPopUp, updateShowPopUp, index }) => {
                 {game.owner}
             </p>
             {(!game.header.Black || !game.header.White) &&
-                game.owner !== user$.value ? (
+                (game.header.Black !== user$.value || game.header.White !== user$.value) ? (
                     <button
                         className="Home__container__list__item__button"
                         onClick={() =>
