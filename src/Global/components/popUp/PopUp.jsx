@@ -6,7 +6,9 @@ import { user$ } from '../../store/userStore';
 import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
+
 import call from '../../api/endpoints';
+
 const PopUp = ({ info, updateShowPopUp }) => {
   const [formState, { radio, label }] = useFormState();
 
@@ -25,7 +27,7 @@ const PopUp = ({ info, updateShowPopUp }) => {
           White: null,
           Date: moment().format('YYYY-MM-DD')
         },
-        board: 'test',
+        board: 'start',
         owner: user$.value
       };
 
