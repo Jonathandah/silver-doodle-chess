@@ -44,22 +44,11 @@ function Home() {
       ) : null}
 
       <section className="Home__container">
-        <ul className="Home__container__list">
-          {Object.values(games).length > 0
-            ? Object.values(games).map((game, index) => {
-                return (
-                  <GamesList
-                    game={game}
-                    games={games}
-                    index={index}
-                    showPopUp={showPopUp}
-                    updateShowPopUp={updateShowPopUp}
-                    key={index}
-                  />
-                );
-              })
-            : null}
-        </ul>
+        <GamesList
+          games={games}
+          showPopUp={showPopUp}
+          updateShowPopUp={updateShowPopUp}
+        />
       </section>
     </div>
   );
