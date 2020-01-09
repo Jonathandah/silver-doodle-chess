@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Login from '../views/login/Login';
-import validateUser from '../Global/functions/validateUser/validateUser';
+import validateUser from '../functions/validateUser/validateUser';
 Enzyme.configure({ adapter: new Adapter() });
 
 const expect = require('chai').expect;
