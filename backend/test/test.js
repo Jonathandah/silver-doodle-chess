@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 // Testing user endpoints
 describe('User endpoints', () => {
   beforeEach(() => {
-    fs.writeFile('./databas/users.json', JSON.stringify({}), error => {
+    fs.writeFile('./databas/users.json', JSON.stringify({"1578259123833":{"username":"joanna","password":"123456"}}), error => {
       if (error) {
         console.log(error);
         return;
@@ -18,17 +18,61 @@ describe('User endpoints', () => {
     });
   });
 
+/************** LOGIN TEST **************/
   describe('/POST login', () => {
-    it('it should return status 400 if password or username are incorrect', done => {
+    it('should return 400 if username or password are empty', done => {
       chai
         .request(server)
         .post('/api/login')
-        .send({ username: 'yaro', password: '123456' })
+        .send({})
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.be.a('object');
           done();
-        });
+        })
+    });
+    it('should return 400 if username is not atleast 4 characters', done => {
+      chai
+        .request(server)
+        .post('/api/login')
+        .send({username: 'jo', password: '123456'})
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.deep.equal({message: 'Username must contain atleast 4 characters and password must have minimum 6 characters.'});
+          done();
+        })
+    });
+    it('should return 400 if password is not atleast 6 characters', done => {
+      chai
+        .request(server)
+        .post('/api/login')
+        .send({username: 'joanna', password: '123'})
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.deep.equal({message: 'Username must contain atleast 4 characters and password must have minimum 6 characters.'});
+          done();
+        })
+    });
+    it('should return 200 and the user info if a user exists', done => {
+      chai
+        .request(server)
+        .post('/api/login')
+        .send({username: 'joanna', password: '123456'})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.deep.equal({"1578259123833":{username: 'joanna', password: '123456'}});
+          done();
+        })
+    });
+    it('should return 400 if credentials are wrong', done => {
+      chai
+        .request(server)
+        .post('/api/login')
+        .send({username: 'kalle', password: '123456'})
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.deep.equal({message: 'Username or password is incorrect.'});
+          done();
+        })
     });
   });
 
