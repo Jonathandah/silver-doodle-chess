@@ -4,9 +4,9 @@ import { user$, updateUser } from '../../global/store/userStore';
 import { Redirect } from 'react-router-dom';
 import PopUp from '../../global/components/popUp/PopUp';
 import './Home.sass';
-import Game from "./Game"
-import Filters from "./Filters"
-// const mockData = require("../../global/mocked/mocked_data");
+import Game from './Game';
+import Filters from './Filters';
+import call from '../../global/api/endpoints';
 
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
@@ -17,8 +17,8 @@ function Home() {
     axios
       .get(
         games.filter === 'My Games'
-          ? `/api/games/my_games/${user$.value}`
-          : '/api/games'
+          ? call.USER_GAMES(user$.value)
+          : call.ALL_GAMES()
       )
       .then(response => {
         console.log(response.data);
@@ -53,11 +53,17 @@ function Home() {
         <ul className="Home__container__list">
           {Object.values(games.data).length > 0
             ? Object.values(games.data).map((game, index) => {
-              return (
-                <Game game={game} games={games} index={index} showPopUp={showPopUp} updateShowPopUp={updateShowPopUp} key={index} />
-
-              );
-            })
+                return (
+                  <Game
+                    game={game}
+                    games={games}
+                    index={index}
+                    showPopUp={showPopUp}
+                    updateShowPopUp={updateShowPopUp}
+                    key={index}
+                  />
+                );
+              })
             : null}
         </ul>
       </section>
