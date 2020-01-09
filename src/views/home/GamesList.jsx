@@ -2,19 +2,12 @@ import React from 'react';
 import { user$ } from '../../global/store/userStore';
 import axios from 'axios';
 
-const GamesList = ({
-  games,
-  game,
-  showPopUp,
-  updateShowPopUp,
-  index,
-  updateGameBoard
-}) => {
+const GamesList = ({ games, game, showPopUp, updateShowPopUp, index }) => {
   return (
     <li className="Home__container__list__item">
       <p className="Home__container__list__item__owner">{game.owner}</p>
-      {!game.header.Black ||
-      (!game.header.White && game.owner !== user$.value) ? (
+      {game.header.Black !== user$.value ||
+      game.header.White !== user$.value ? (
         <button
           className="Home__container__list__item__button"
           onClick={() => {
@@ -25,7 +18,6 @@ const GamesList = ({
                 id: Object.keys(games.data)[index]
               }
             });
-            updateGameBoard(true);
           }}
         >
           Join

@@ -11,7 +11,6 @@ import './App.sass';
 
 function App() {
   const [loggedIn, updateLoggedIn] = useState(user$.value);
-  const [games, updateGames] = useState(null);
 
   useEffect(() => {
     const sub = user$.subscribe(updated => updateLoggedIn(updated));

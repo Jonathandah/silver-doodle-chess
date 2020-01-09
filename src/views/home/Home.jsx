@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { user$ } from '../../global/store/userStore';
+import { games$, updateGames } from '../../global/store/games';
 import { Redirect } from 'react-router-dom';
 import PopUp from '../../global/components/popUp/PopUp';
-import './Home.sass';
 import GamesList from './GamesList';
+import './Home.sass';
 
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
+  const [games, setGames] = useState(null);
 
-  let updateList = () => {
+  useEffect(() => {
+    const sub = games$.subscribe(updates => setGames(updates));
+
     axios
       .get('/api/games')
       .then(response => {
@@ -18,9 +22,11 @@ function Home() {
       .catch(error => {
         console.error(error);
       });
-  };
-  useEffect(() => {
-    updateList();
+
+    return () => {
+      sub.unsubscribe();
+      updateGames(null);
+    };
   }, []);
 
   if (!user$.value) {
@@ -34,11 +40,7 @@ function Home() {
   return (
     <div className="Home">
       {showPopUp.join ? (
-        <PopUp
-          info={showPopUp}
-          updateShowPopUp={updateShowPopUp}
-          updateList={updateList}
-        />
+        <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
       ) : null}
 
       <section className="Home__container">

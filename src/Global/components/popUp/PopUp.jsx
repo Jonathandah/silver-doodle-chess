@@ -3,10 +3,12 @@ import './PopUp.sass';
 import axios from 'axios';
 import { useFormState } from 'react-use-form-state';
 import { user$ } from '../../store/userStore';
+import { updateGames } from '../../store/games';
 import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
-const PopUp = ({ info, updateShowPopUp, updateList }) => {
+
+const PopUp = ({ info, updateShowPopUp }) => {
   const [formState, { radio, label }] = useFormState();
 
   function doRequest(e) {
@@ -29,10 +31,19 @@ const PopUp = ({ info, updateShowPopUp, updateList }) => {
 
       newGame.header[formState.values.color] = user$.value;
 
-      axios.post('/api/games', newGame).then(response => {
-        updateShowPopUp({ join: false, create: false });
-        updateList();
-      });
+      axios
+        .post('/api/games', newGame)
+        .then(response => {
+          updateShowPopUp({ join: false, create: false });
+
+          const { pathname } = window.location;
+          if (pathname === '/') {
+            return axios.get('/api/games');
+          } else if (pathname === '/my_games') {
+            return axios.get(`/api/games/my_games/${user$.value}`);
+          }
+        })
+        .then(res => updateGames(res.data));
     }
   }
 
