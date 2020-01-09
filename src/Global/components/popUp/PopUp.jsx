@@ -24,7 +24,7 @@ const PopUp = ({ info, updateShowPopUp }) => {
           White: null,
           Date: moment().format('YYYY-MM-DD')
         },
-        board: 'test',
+        board: 'start',
         owner: user$.value
       };
 

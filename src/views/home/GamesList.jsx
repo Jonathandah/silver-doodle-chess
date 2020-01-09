@@ -1,7 +1,8 @@
 import React from 'react';
 import { user$ } from '../../global/store/userStore';
+import axios from 'axios';
 
-const Game = ({
+const GamesList = ({
   games,
   game,
   showPopUp,
@@ -33,7 +34,7 @@ const Game = ({
         <button
           className="Home__container__list__item__button"
           onClick={() => {
-            updateGameBoard(true);
+            axios.updateGameBoard(true);
           }}
         >
           Play
@@ -43,4 +44,4 @@ const Game = ({
   );
 };
 
-export default Game;
+export default GamesList;

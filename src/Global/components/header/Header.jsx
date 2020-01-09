@@ -1,31 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { user$, updateUser } from '../../store/userStore';
-import { Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { updateUser } from '../../store/userStore';
 import { Link } from 'react-router-dom';
+import PopUp from '../popUp/PopUp';
+import './Header.sass';
 
 function Header() {
-  const [logout, updateLogout] = useState(false);
-
-  if (logout) {
-    updateUser();
-    return <Redirect to="/login" />;
-  } else if (!user$.value) {
-    return <Redirect to="/login" />;
-  }
+  const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
 
   return (
-    <header className="header">
-      <nav className="header__nav">
-        <button className="header__nav__button--createGame">Create Game</button>
-        <button className="header__nav__button--logOut">Log out</button>
-        <Link className="header__nav__link--allGames" to="/">
-          All Games
-        </Link>
-        <Link className="header__nav__link--myGames" to="/my_games">
-          My Games
-        </Link>
-      </nav>
-    </header>
+    <>
+      <header className="Header">
+        <nav className="Header__nav">
+          <button
+            className="Header__nav__button--createGame"
+            onClick={() => updateShowPopUp({ ...showPopUp, create: true })}
+          >
+            Create Game
+          </button>
+          <Link className="Header__nav__link--allGames" to="/">
+            <button className="Header__nav__button--allGames">All Games</button>
+          </Link>
+          <Link className="Header__nav__link--myGames" to="/my_games">
+            <button className="Header__nav__button--myGames">My Games</button>
+          </Link>
+          <button
+            className="Header__nav__button--logOut"
+            onClick={() => updateUser()}
+          >
+            Log out
+          </button>
+        </nav>
+      </header>
+
+      {showPopUp.create ? (
+        <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
+      ) : null}
+    </>
   );
 }
 
