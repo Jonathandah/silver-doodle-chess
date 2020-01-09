@@ -6,7 +6,7 @@ import { user$ } from '../../store/userStore';
 import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
-const PopUp = ({ info, updateShowPopUp }) => {
+const PopUp = ({ info, updateShowPopUp, updateList }) => {
   const [formState, { radio, label }] = useFormState();
 
   function doRequest(e) {
@@ -14,7 +14,6 @@ const PopUp = ({ info, updateShowPopUp }) => {
       axios
         .post(`/api/games/${info.join.id}/join`, { username: user$.value })
         .then(response => {
-          console.log(response);
           updateShowPopUp({ join: false, create: false });
         });
     } else {
@@ -31,8 +30,8 @@ const PopUp = ({ info, updateShowPopUp }) => {
       newGame.header[formState.values.color] = user$.value;
 
       axios.post('/api/games', newGame).then(response => {
-        console.log(response);
         updateShowPopUp({ join: false, create: false });
+        updateList();
       });
     }
   }

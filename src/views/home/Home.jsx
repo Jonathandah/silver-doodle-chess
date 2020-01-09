@@ -8,9 +8,8 @@ import GamesList from './GamesList';
 
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
-  const [games, updateGames] = useState(null);
 
-  useEffect(() => {
+  let updateList = () => {
     axios
       .get('/api/games')
       .then(response => {
@@ -19,6 +18,9 @@ function Home() {
       .catch(error => {
         console.error(error);
       });
+  };
+  useEffect(() => {
+    updateList();
   }, []);
 
   if (!user$.value) {
@@ -32,7 +34,11 @@ function Home() {
   return (
     <div className="Home">
       {showPopUp.join ? (
-        <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
+        <PopUp
+          info={showPopUp}
+          updateShowPopUp={updateShowPopUp}
+          updateList={updateList}
+        />
       ) : null}
 
       <section className="Home__container">
