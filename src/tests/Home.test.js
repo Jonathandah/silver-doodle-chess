@@ -49,11 +49,25 @@ describe('Render games in home component', () => {
         done();
     });
 
-    it('Should only se join button for avalible games', () => {
+    it('Should only see join button for avalible games', () => {
+
+        console.log(wrapper.update().debug())
+        const joinButton = wrapper.update().find('button.Home__container__list__item__button[children="Join"]')
         expect(
-            wrapper.update().find('.Home__container__list__item__button')
+            joinButton
         ).to.have.lengthOf(2);
     });
+
+
+    it.only('The user has only one active game, therefore should only 1 play button appear', () => {
+
+        console.log(wrapper.update().debug())
+        const playButton = wrapper.update().find('button.Home__container__list__item__button[children="Play"]')
+        expect(
+            playButton
+        ).to.have.lengthOf(1);
+    });
+
 });
 
 // describe("Test Logout button", () => {
