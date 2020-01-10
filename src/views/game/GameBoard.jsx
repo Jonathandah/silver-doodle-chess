@@ -4,7 +4,7 @@ import Board from './Board.jsx';
 function Game(user) {
   return (
     <div className="Game">
-      <Board />>
+      <Board />
     </div>
   );
 }
