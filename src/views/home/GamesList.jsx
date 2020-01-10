@@ -12,28 +12,27 @@ const GamesList = ({ games, showPopUp, updateShowPopUp }) => {
           <li className="Home__container__list__item" key={idx}>
             <p className="Home__container__list__item__owner">{game.owner}</p>
             {(!game.header.Black || !game.header.White) &&
-            game.owner !== user$.value ? (
-              <button
-                className="Home__container__list__item__button"
-                onClick={() => {
-                  updateShowPopUp({
-                    ...showPopUp,
-                    join: {
-                      game
-                    }
-                  });
-                }}
-              >
-                Join
+              game.owner !== user$.value ? (
+                <button
+                  className="Home__container__list__item__button"
+                  onClick={() => {
+
+
+
+
+                    console.log(cur)
+                  }}
+                >
+                  Join
               </button>
-            ) : game.header.Black === user$.value ||
-              game.header.White === user$.value ? (
-              <Link to={`/game/${cur}`}>
-                <button className="Home__container__list__item__button">
-                  Play
+              ) : game.header.Black === user$.value ||
+                game.header.White === user$.value ? (
+                  <Link to={`/game/${cur}`}>
+                    <button className="Home__container__list__item__button">
+                      Play
                 </button>
-              </Link>
-            ) : null}
+                  </Link>
+                ) : null}
           </li>
         );
 

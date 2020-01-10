@@ -9,6 +9,7 @@ import Join from './Join';
 import Create from './Create';
 
 const PopUp = ({ info, updateShowPopUp }) => {
+  console.log(info)
   const [formState, { radio, label }] = useFormState();
 
   function doRequest(e) {
@@ -16,6 +17,7 @@ const PopUp = ({ info, updateShowPopUp }) => {
       axios
         .post(`/api/games/${info.join.id}/join`, { username: user$.value })
         .then(response => {
+
           updateShowPopUp({ join: false, create: false });
         });
     } else {
@@ -54,8 +56,8 @@ const PopUp = ({ info, updateShowPopUp }) => {
           {info.join ? (
             <Join info={info} />
           ) : (
-            <Create label={label} radio={radio} />
-          )}
+              <Create label={label} radio={radio} />
+            )}
         </div>
 
         <nav className="PopUp__section__nav">
