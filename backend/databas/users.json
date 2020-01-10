@@ -1,1 +1,11 @@
+<<<<<<< HEAD
 {"1578390865186":{"username":"emma","password":"123456"},"1578565025234":{"username":"ProGloD","password":"Yaro1234"},"1578259123833":{"username":"joanna","password":"123456"},"1578573398806":{"username":"Jonathan","password":"123456789"},"1578655929718":{"username":"superadmin@cybercom.com","password":"Hejsan!\"#123"}}
+=======
+{
+  "1578390865186": { "username": "emma", "password": "123456" },
+  "1578565025234": { "username": "ProGloD", "password": "Yaro1234" },
+  "1578259123833": { "username": "joanna", "password": "123456" },
+  "1578573398806": { "username": "Jonathan", "password": "123456789" },
+  "1578658140231": { "username": "emmzor", "password": "123456" }
+}
+>>>>>>> 3512c19a5affb41980a95103f3f2270d5190c72c
