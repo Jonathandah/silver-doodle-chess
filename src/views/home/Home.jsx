@@ -3,8 +3,10 @@ import axios from 'axios';
 import { user$ } from '../../global/store/userStore';
 import { Redirect } from 'react-router-dom';
 import PopUp from '../../global/components/popUp/PopUp';
-import './Home.sass';
 import GamesList from './GamesList';
+import './Home.sass';
+
+import call from '../../global/api/endpoints';
 
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
@@ -12,7 +14,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get('/api/games')
+      .get(call.ALL_GAMES())
       .then(response => {
         updateGames(response.data);
       })
