@@ -7,11 +7,11 @@ import { updateGames } from '../../store/games';
 import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
-
 import call from '../../api/endpoints';
+const Chess = require('chess.js');
 
 const PopUp = ({ info, updateShowPopUp }) => {
-  console.log(info)
+  console.log(info);
   const [formState, { radio, label }] = useFormState();
 
   function doRequest(e) {
@@ -19,7 +19,6 @@ const PopUp = ({ info, updateShowPopUp }) => {
       axios
         .post(call.JOIN_GAME(info.join.id), { username: user$.value })
         .then(response => {
-
           updateShowPopUp({ join: false, create: false });
         });
     } else {
@@ -29,7 +28,7 @@ const PopUp = ({ info, updateShowPopUp }) => {
           White: null,
           Date: moment().format('YYYY-MM-DD')
         },
-        board: 'start',
+        board: new Chess().fen(),
         owner: user$.value
       };
 
@@ -58,8 +57,8 @@ const PopUp = ({ info, updateShowPopUp }) => {
           {info.join ? (
             <Join info={info} />
           ) : (
-              <Create label={label} radio={radio} />
-            )}
+            <Create label={label} radio={radio} />
+          )}
         </div>
 
         <nav className="PopUp__section__nav">
