@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Board from './Board.jsx';
 import Turn from './Turn.jsx';
 import './GameBoard.sass';
