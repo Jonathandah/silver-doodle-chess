@@ -2,20 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { user$ } from '../../global/store/userStore';
+import { games$, updateGames } from '../../global/store/games';
 
 function MyGames() {
-  const [games, updateGames] = useState(null);
+  const [games, setGames] = useState(null);
 
   useEffect(() => {
+    const sub = games$.subscribe(updates => setGames(updates));
+
     axios
       .get(`/api/games/my_games/${user$.value}`)
-      .then(response => {
-        console.log(response);
-        updateGames(response.data);
-      })
+      .then(response => updateGames(response.data))
       .catch(error => {
         console.error(error.text);
       });
+
+    return () => {
+      sub.unsubscribe();
+      updateGames(null);
+    };
   }, []);
 
   const renderList = () => {
@@ -37,7 +42,11 @@ function MyGames() {
     return <ul>{arr}</ul>;
   };
 
-  return <div>{!games ? <p>Loading</p> : renderList()}</div>;
+  if (!games) {
+    return <p>Loading...</p>;
+  }
+
+  return <div>{renderList()}</div>;
 }
 
 export default MyGames;

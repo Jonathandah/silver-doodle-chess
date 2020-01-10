@@ -12,7 +12,7 @@ let call = {
     return `/api/games/${id}`;
   },
   JOIN_GAME: id => {
-    //get
+    //post
     return `/api/games/${id}/join`;
   },
   ALL_GAMES: () => {
