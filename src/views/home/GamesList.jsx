@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { user$ } from '../../global/store/userStore';
+import axios from "axios"
+import call from "../../global/api/endpoints"
+import { Redirect } from "react-router-dom"
 
-const GamesList = ({ games, showPopUp, updateShowPopUp }) => {
+
+const GamesList = ({ games }) => {
+  const [joinGame, updateJoinGame] = useState(false)
+
+  if (joinGame) {
+    return <Redirect to={`/game/${joinGame}`} />
+  }
   return (
     <ul className="Home__container__list">
       {Object.keys(games).reduce((acc, cur, idx) => {
@@ -16,11 +25,9 @@ const GamesList = ({ games, showPopUp, updateShowPopUp }) => {
                 <button
                   className="Home__container__list__item__button"
                   onClick={() => {
-
-
-
-
-                    console.log(cur)
+                    axios.post(call.JOIN_GAME(cur), { username: user$.value }).then(
+                      updateJoinGame(cur)
+                    )
                   }}
                 >
                   Join

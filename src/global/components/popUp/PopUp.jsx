@@ -8,14 +8,16 @@ import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
 
+import call from '../../api/endpoints';
+
 const PopUp = ({ info, updateShowPopUp }) => {
   console.log(info)
   const [formState, { radio, label }] = useFormState();
 
   function doRequest(e) {
-    if (e.target.value === 'Join') {
+    if (e.target.value == 'Join') {
       axios
-        .post(`/api/games/${info.join.id}/join`, { username: user$.value })
+        .post(call.JOIN_GAME(info.join.id), { username: user$.value })
         .then(response => {
 
           updateShowPopUp({ join: false, create: false });
@@ -34,15 +36,15 @@ const PopUp = ({ info, updateShowPopUp }) => {
       newGame.header[formState.values.color] = user$.value;
 
       axios
-        .post('/api/games', newGame)
+        .post(call.ADD_NEW_GAME(), newGame)
         .then(response => {
           updateShowPopUp({ join: false, create: false });
 
           const { pathname } = window.location;
           if (pathname === '/') {
-            return axios.get('/api/games');
+            return axios.get(call.ALL_GAMES());
           } else if (pathname === '/my_games') {
-            return axios.get(`/api/games/my_games/${user$.value}`);
+            return axios.get(call.USER_GAMES(user$.value));
           }
         })
         .then(res => updateGames(res.data));
