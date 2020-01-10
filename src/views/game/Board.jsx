@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Chessboard from 'chessboardjsx';
 import axios from 'axios';
 import io from 'socket.io-client';
+import { user$ } from '../../global/store/userStore';
 
 const socket = io('http://localhost:8000');
 
@@ -10,7 +11,7 @@ const Chess = require('chess.js');
 
 const chess = new Chess();
 
-const Board = () => {
+const Board = ({ setGameInfo, setCurrentPlayer }) => {
   const [position, setPosition] = useState(null);
   const [squareStyles, setSquareStyles] = useState({});
   const [game, setGame] = useState(null);
@@ -21,6 +22,7 @@ const Board = () => {
     socket.on('new_move', data => {
       setPosition(data.board);
       chess.load(data.board);
+      setCurrentPlayer(chess.turn());
     });
 
     axios.get(`/api/games/${gameId}`).then(res => {
@@ -29,6 +31,9 @@ const Board = () => {
       setGame(data);
       setPosition(data.board);
       chess.load(data.board);
+      setCurrentPlayer(chess.turn());
+
+      setGameInfo(data.header);
     });
 
     return () => {
@@ -79,8 +84,16 @@ const Board = () => {
     }
 
     const board = chess.fen();
-
-    axios.post(`/api/games/${gameId}/move`, { board });
+    axios
+      .post(`/api/games/${gameId}/move`, { board })
+      .then(res => {
+        setCurrentPlayer(chess.turn());
+      })
+      .catch(error => {
+        console.error(error);
+        chess.undo();
+        setPosition(chess.fen());
+      });
   };
 
   if (!game) {
@@ -93,6 +106,10 @@ const Board = () => {
       onMouseOverSquare={onMouseOverSquare}
       onMouseOutSquare={removeHighlight}
       onDrop={onDrop}
+      draggable={
+        (chess.turn() === 'w' && game.header.White === user$.value) ||
+        (chess.turn() === 'b' && game.header.Black === user$.value)
+      }
       squareStyles={squareStyles}
       boardStyle={{
         borderRadius: '5px',

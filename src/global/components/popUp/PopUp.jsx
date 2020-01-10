@@ -7,9 +7,8 @@ import { updateGames } from '../../store/games';
 import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
-
-const Chess = require('chess.js');
 import call from '../../api/endpoints';
+const Chess = require('chess.js');
 
 const PopUp = ({ info, updateShowPopUp }) => {
   console.log(info);
