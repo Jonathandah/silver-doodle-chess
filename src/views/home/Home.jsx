@@ -7,6 +7,8 @@ import PopUp from '../../global/components/popUp/PopUp';
 import GamesList from './GamesList';
 import './Home.sass';
 
+import call from '../../global/api/endpoints';
+
 function Home() {
   const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
   const [games, setGames] = useState(null);
@@ -15,7 +17,7 @@ function Home() {
     const sub = games$.subscribe(updates => setGames(updates));
 
     axios
-      .get('/api/games')
+      .get(call.ALL_GAMES())
       .then(response => {
         updateGames(response.data);
       })

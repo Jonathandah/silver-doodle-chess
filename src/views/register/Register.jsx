@@ -7,6 +7,7 @@ import ErrorDisplay from '../../global/components/errorDisplay/ErrorDisplay';
 import debounce from '../../global/functions/debounce/debounce';
 import './Register.sass';
 import '../../global/sass/Theme.sass';
+import call from '../../global/api/endpoints';
 
 function Register() {
   const [submit, updateSubmit] = useState(false);
@@ -19,7 +20,7 @@ function Register() {
     if (!Object.keys(validateUser(formState.values)).length) {
       //do axios request
       axios
-        .post('/api/register', formState.values)
+        .post(call.REGISTER(), formState.values)
         .then(response => {
           updateSubmit(true);
         })

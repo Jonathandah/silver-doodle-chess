@@ -1,44 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { user$ } from '../../global/store/userStore';
+import axios from "axios"
+import call from "../../global/api/endpoints"
+import { Redirect } from "react-router-dom"
 
-const GamesList = ({ games, showPopUp, updateShowPopUp }) => {
+const GamesList = ({ games }) => {
+  const [joinGame, updateJoinGame] = useState(false)
+
+  const checkJoinability = (gameId, game) => {
+    if ((!game.header.Black || !game.header.White) &&
+      game.owner !== user$.value) {
+      return (
+        <button
+          className="Home__container__list__item__button"
+          onClick={() => {
+            axios.post(call.JOIN_GAME(gameId), { username: user$.value }).then(
+              updateJoinGame(gameId)
+            )
+          }}
+        >
+          Join
+</button>
+      )
+    } else if (game.header.Black === user$.value ||
+      game.header.White === user$.value) {
+      return (
+        <Link to={`/game/${gameId}`}>
+          <button className="Home__container__list__item__button">
+            Play
+    </button>
+        </Link>
+      )
+    }
+  }
+
+  const renderListElements = () => Object.keys(games).map((gameId, idx) => {
+    const game = games[gameId];
+
+    return <li className="Home__container__list__item" key={idx}>
+      <p className="Home__container__list__item__owner">{game.owner}</p>
+      {checkJoinability(gameId, game)}
+    </li>
+  });
+
+
+  if (joinGame) {
+    return <Redirect to={`/game/${joinGame}`} />
+  }
   return (
     <ul className="Home__container__list">
-      {Object.keys(games).reduce((acc, cur, idx) => {
-        const game = games[cur];
-
-        acc.push(
-          <li className="Home__container__list__item" key={idx}>
-            <p className="Home__container__list__item__owner">{game.owner}</p>
-            {(!game.header.Black || !game.header.White) &&
-            game.owner !== user$.value ? (
-              <button
-                className="Home__container__list__item__button"
-                onClick={() => {
-                  updateShowPopUp({
-                    ...showPopUp,
-                    join: {
-                      game
-                    }
-                  });
-                }}
-              >
-                Join
-              </button>
-            ) : game.header.Black === user$.value ||
-              game.header.White === user$.value ? (
-              <Link to={`/game/${cur}`}>
-                <button className="Home__container__list__item__button">
-                  Play
-                </button>
-              </Link>
-            ) : null}
-          </li>
-        );
-
-        return acc;
-      }, [])}
+      {renderListElements()}
     </ul>
   );
 };
