@@ -8,6 +8,8 @@ import moment from 'moment';
 import Join from './Join';
 import Create from './Create';
 
+const Chess = require('chess.js');
+
 const PopUp = ({ info, updateShowPopUp }) => {
   const [formState, { radio, label }] = useFormState();
 
@@ -25,7 +27,7 @@ const PopUp = ({ info, updateShowPopUp }) => {
           White: null,
           Date: moment().format('YYYY-MM-DD')
         },
-        board: 'start',
+        board: new Chess().fen(),
         owner: user$.value
       };
 

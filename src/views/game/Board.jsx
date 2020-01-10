@@ -1,15 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Chessboard from 'chessboardjsx';
+import axios from 'axios';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:8000');
 
 const Chess = require('chess.js');
 
+const chess = new Chess();
+
 const Board = () => {
-  const [position, setPosition] = useState('start');
+  const [position, setPosition] = useState(null);
   const [squareStyles, setSquareStyles] = useState({});
   const [game, setGame] = useState(null);
 
+  const { gameId } = useParams();
+
   useEffect(() => {
-    setGame(new Chess());
+    socket.on('new_move', data => {
+      setPosition(data.board);
+      chess.load(data.board);
+    });
+
+    axios.get(`/api/games/${gameId}`).then(res => {
+      const data = Object.values(res.data)[0];
+
+      setGame(data);
+      setPosition(data.board);
+      chess.load(data.board);
+    });
+
+    return () => {
+      socket.off('new_move');
+    };
   }, []);
 
   let addHighlight = squares => {
@@ -31,7 +55,7 @@ const Board = () => {
   };
 
   let onMouseOverSquare = square => {
-    let moves = game.moves({ square, verbose: true });
+    let moves = chess.moves({ square, verbose: true });
 
     if (!moves.length) {
       return;
@@ -44,7 +68,7 @@ const Board = () => {
   };
 
   let onDrop = ({ sourceSquare, targetSquare }) => {
-    let move = game.move({
+    let move = chess.move({
       from: sourceSquare,
       to: targetSquare,
       promotion: 'q'
@@ -54,8 +78,14 @@ const Board = () => {
       return;
     }
 
-    setPosition(game.fen());
+    const board = chess.fen();
+
+    axios.post(`/api/games/${gameId}/move`, { board });
   };
+
+  if (!game) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Chessboard
