@@ -1,4 +1,7 @@
 .Login
+    background: no-repeat center center fixed
+    background-size: cover
+    background-image: url(https://i2.wp.com/wallur.com/wp-content/uploads/2016/12/chess-background-6.jpg?fit=1920%2C1080)
     height: 100%
     width: 100%
     display: flex
@@ -10,8 +13,11 @@
         flex-direction: column
         justify-content: center
         align-items: center
-        width: 38%
-        height: 24%
+        width: 33%
+        height: 25%
+        padding: 30px
+        background: #35353580
+        border-radius: 3px
         .Login__section__form
             display: flex
             flex-direction: column
@@ -23,7 +29,24 @@
                 width: 80%
                 height: 20%
                 margin-bottom: 2%
+            .Login__section__form__button
+                padding: 5px 15px 5px 15px
+                position: absolute
+                bottom: 5px
+                transform: translate(0%, -50%)
+                font-size: 12px
+                border: 2px solid #dedede
+                border-radius: 15px
+                font-weight: 600
+                background: transparent
+                color: white
+                cursor: pointer
+                outline: none
+                &:hover
+                    background: #cecece30
     .Login__section__link--register
         position: absolute
-        right: 0
-        top: 0
+        right: 15px
+        top: 10px
+        color: white
+        font-weight: 400
