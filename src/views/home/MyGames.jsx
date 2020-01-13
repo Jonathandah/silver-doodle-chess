@@ -28,18 +28,18 @@ function MyGames() {
 
     for (let gameId in games) {
       let listItem = (
-        <li>
-          White: {games[gameId].header.White} Black:{' '}
+        <li className='Home__myGames__list__item'>
+          <i class="far fa-square white__player"></i> &nbsp; <b>White Player:</b> &nbsp; {games[gameId].header.White} &nbsp; <i class="fas fa-square black__player"></i> &nbsp; <b>Black Player:</b> &nbsp; {' '}
           {games[gameId].header.Black}
           <Link to={`/game/${gameId}`}>
-            <button>Play</button>
+            <button className='Home__myGames__list__item__button'>Play</button>
           </Link>
         </li>
       );
       arr.push(listItem);
     }
 
-    return <ul>{arr}</ul>;
+    return <ul className='Home__myGames__list'>{arr}</ul>;
   };
 
   if (!games) {
