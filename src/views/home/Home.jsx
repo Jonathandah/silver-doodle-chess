@@ -41,9 +41,9 @@ function Home() {
 
   return (
     <div className="Home">
-      {showPopUp.join ? (
+      {/* {showPopUp.join ? (
         <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
-      ) : null}
+      ) : null} */}
 
       <section className="Home__container">
         <GamesList

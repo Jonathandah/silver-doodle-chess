@@ -13,7 +13,7 @@ const Chess = require('chess.js');
 
 
 const PopUp = ({ info, updateShowPopUp }) => {
-  console.log(info);
+
   const [formState, { radio, label }] = useFormState();
 
   function doRequest(e) {
