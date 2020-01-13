@@ -17,8 +17,8 @@ function Turn({ gameInfo, currentPlayer }) {
       ) : player === user$.value ? (
         <p className="Turn__player">Your turn!</p>
       ) : (
-            <p className="Turn__player">{player}´s turn!</p>
-          )}
+        <p className="Turn__player">{player}´s turn!</p>
+      )}
     </div>
   );
 }
