@@ -20,19 +20,6 @@ describe('Test Header components renders ', () => {
 describe('Test header in app', () => {
 
 
-    // beforeEach(() => {
-
-
-    //     axios.post = jest.fn(() => {
-    //         const url = axios.get.mock.calls[0][0]
-    //         console.log(url)
-    //         return new Promise((resolve, reject) => {
-    //             resolve({ data: mocked_data });
-    //         });
-    //     });
-
-    // });
-
     it('Create game button should open popup', () => {
         let wrapper = mount(<Router><Header /></Router>);
         wrapper.find(".Header__nav__button--createGame").simulate("click")

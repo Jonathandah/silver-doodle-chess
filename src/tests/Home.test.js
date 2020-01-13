@@ -11,8 +11,6 @@ const UserStore = require('../global/store/userStore')
 import Home from '../views/home/Home';
 import { BehaviorSubject } from 'rxjs';
 
-// Make sure to resolve with a promise
-
 Enzyme.configure({ adapter: new Adapter() });
 
 const expect = require('chai').expect;
@@ -68,7 +66,6 @@ describe("Try to join game", () => {
         let button = wrapper.find(".Home__container__list__item__button")
         button.at(0).simulate("click")
         expect(wrapper.update().find("GamesList")).to.have.length(1)
-
     })
 })
 
