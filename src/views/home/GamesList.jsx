@@ -19,7 +19,8 @@ const GamesList = ({ games }) => {
           onClick={() => {
             axios
               .post(call.JOIN_GAME(gameId), { username: user$.value })
-              .then(updateJoinGame(gameId));
+              .then(updateJoinGame(gameId))
+              .catch(error => console.error(error));
           }}
         >
           Join
