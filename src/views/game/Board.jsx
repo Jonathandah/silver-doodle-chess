@@ -118,15 +118,17 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
 
   return (
     <div className="Board">
-      {gameOver.checkmate ? (
-        <p className="Board__GameOver">Checkmate</p>
-      ) : gameOver.draw ? (
-        <p className="Board__GameOver">It's a draw</p>
-      ) : gameOver.stalemate ? (
-        <p className="Board__GameOver">Stalemate</p>
-      ) : check ? (
-        <p className="Board__GameOver">Check</p>
-      ) : null}
+      <div className="Board__container">
+        {gameOver.checkmate ? (
+          <p className="Board__container__GameOver">Checkmate</p>
+        ) : gameOver.draw ? (
+          <p className="Board__container__GameOver">It's a draw</p>
+        ) : gameOver.stalemate ? (
+          <p className="Board__container__GameOver">Stalemate</p>
+        ) : check ? (
+          <p className="Board__container__GameOver">Check</p>
+        ) : null}
+      </div>
       <Chessboard
         position={position}
         onMouseOverSquare={onMouseOverSquare}
