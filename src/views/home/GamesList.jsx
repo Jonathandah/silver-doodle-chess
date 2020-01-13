@@ -20,7 +20,7 @@ const GamesList = ({ games }) => {
             axios
               .post(call.JOIN_GAME(gameId), { username: user$.value })
               .then(updateJoinGame(gameId))
-              .catch(error => console.log(error));
+              .catch(error => console.error(error));
           }}
         >
           Join
