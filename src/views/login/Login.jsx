@@ -51,8 +51,8 @@ function Login() {
 
   return (
     <div className="Login">
-      <section className="Login__section light__purple">
-        <h2 className="white">Login</h2>
+      <section className="Login__section">
+        <h2 className="white">Login here</h2>
         <Link className="Login__section__link--register" to="/register">
           Not yet registered?
         </Link>
@@ -82,7 +82,7 @@ function Login() {
             <ErrorDisplay errorMessage={errors.password || errors.catch} />
           ) : null}
 
-          <button type="Submit">Login</button>
+          <button className="Login__section__form__button" type="Submit">Login</button>
         </form>
       </section>
     </div>

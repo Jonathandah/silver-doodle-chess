@@ -46,15 +46,16 @@ const PopUp = ({ updateShowPopUp }) => {
     <div className="PopUp">
       <section className="PopUp__section">
         <div className="PopUp__section__container">
+          <p className="PopUp__section__container__title">Pick your color <i className="fas fa-chess-rook"></i></p>
           <Create label={label} radio={radio} />
         </div>
 
         <nav className="PopUp__section__nav">
-          <button className="PopUp__section__nav__button" onClick={doRequest}>
+          <button className="PopUp__section__nav__button--createGame" onClick={doRequest}>
             Create Game
           </button>
           <button
-            className="PopUp__section__nav__button"
+            className="PopUp__section__nav__button--cancel"
             onClick={() => updateShowPopUp(false)}
           >
             Cancel

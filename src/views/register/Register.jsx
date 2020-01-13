@@ -38,7 +38,7 @@ function Register() {
   return (
     <div className="Register">
       <section className="Register__section light__purple">
-        <h2 className="white">Register</h2>
+        <h2 className="white">Register player</h2>
         <Link className="Register__section__link--login" to="/login">
           Already have an account?
         </Link>
@@ -68,7 +68,7 @@ function Register() {
             <ErrorDisplay errorMessage={errors.password || errors.catch} />
           ) : null}
 
-          <button type="Submit">Register</button>
+          <button className="Register__section__form__button" type="Submit">Register</button>
         </form>
       </section>
     </div>

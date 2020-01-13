@@ -47,7 +47,7 @@ const GamesList = ({ games }) => {
       return (
         <li className="Home__container__list__item" key={idx}>
           <p className="Home__container__list__item__owner">
-            White: {game.header.White || '-'}, Black: {game.header.Black || '-'}
+          <i className="far fa-square white__player"></i> &nbsp;<b>White Player: </b> {game.header.White || '-'} &nbsp; <i className="fas fa-square black__player"></i> &nbsp;<b>Black player:</b> {game.header.Black || '-'}
           </p>
           {checkJoinability(gameId, game)}
         </li>

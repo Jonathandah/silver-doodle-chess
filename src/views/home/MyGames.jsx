@@ -24,8 +24,27 @@ function MyGames() {
     };
   }, []);
 
+  const renderList = () => {
+    let arr = [];
+
+    for (let gameId in games) {
+      let listItem = (
+        <li className="Home__myGames__list__item">
+          <i className="far fa-square white__player"></i> &nbsp; <b>White Player:</b> &nbsp; {games[gameId].header.White} &nbsp; <i className="fas fa-square black__player"></i> &nbsp; <b>Black Player:</b> &nbsp; {' '}
+          {games[gameId].header.Black}
+          <Link to={`/game/${gameId}`}>
+            <button className="Home__myGames__list__item__button">Play</button>
+          </Link>
+        </li>
+      );
+      arr.push(listItem);
+    }
+
+    return <ul className="Home__myGames__list">{arr}</ul>;
+  };
+
   if (!games) {
-    return <p>Loading...</p>;
+    return <div className="lds-ellipsis myGames-spinner"><div></div><div></div><div></div><div></div></div>;
   }
 
   return (

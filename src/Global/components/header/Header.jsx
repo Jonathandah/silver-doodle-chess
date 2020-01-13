@@ -17,12 +17,23 @@ function Header() {
             onClick={() => updateShowPopUp(true)}
           >
             Create Game
+            <i className="fas fa-chess-rook nav__icon"></i>
           </button>
           <Link className="Header__nav__link--allGames" to="/">
-            <button className="Header__nav__button--allGames">All Games</button>
+            <button 
+              className="Header__nav__button--allGames"
+            >
+              All Games
+              <i className="fas fa-chess nav__icon"></i>
+            </button>
           </Link>
           <Link className="Header__nav__link--myGames" to="/my_games">
-            <button className="Header__nav__button--myGames">My Games</button>
+            <button 
+              className="Header__nav__button--myGames"
+            >
+              My Games
+              <i className="fas fa-chess-bishop nav__icon"></i>
+            </button>
           </Link>
           <button
             className="Header__nav__button--logOut"

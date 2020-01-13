@@ -6,7 +6,7 @@ import axios from 'axios';
 import { MemoryRouter as Router } from 'react-router-dom';
 
 import jest from 'jest-mock';
-import mocked_data from '../Global/mocked/mocked_data';
+import mocked_data from '../global/mocked/mocked_data';
 const UserStore = require('../global/store/userStore')
 import Home from '../views/home/Home';
 import { BehaviorSubject } from 'rxjs';

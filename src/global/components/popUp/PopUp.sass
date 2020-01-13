@@ -11,20 +11,56 @@
     justify-content: center
     align-items: center
     .PopUp__section
-        width: 34%
-        height: 60%
-        background: white
+        width: 30%
+        height: 25%
+        background: #ffffffeb
         z-index: 200000
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
         display: flex
         flex-direction: column
+        border-radius: 1px
 
         .PopUp__section__container
-            height: 90%
+            display: flex
+            justify-content: center
+            align-items: center
+            flex-direction: column
+            height: 85%
             width: 100%
+            .PopUp__section__container__title
+                position: relative
+                bottom: 30px
+                font-size: 17px
+                font-weight: 500
+                color: #191919
+        .PopUp__choose__white
+            margin: 5px
+            color: #3c3c3c
+        .PopUp__choose__black    
+            margin: 5px
+            color: #3c3c3c
         .PopUp__section__nav
             height: 10%
             width: 100%
             display: flex
             justify-content: space-evenly
             align-items: center
+            button
+                margin-bottom: 2vh
+                padding: 5px 10px 5px 10px
+                font-size: 12px
+                border: 2px solid #3c3c3c
+                border-radius: 3px
+                background: #fafcff
+                color: #3c3c3c
+                font-weight: 600  
+                cursor: pointer  
+                outline: none
+                &:hover
+                    background: #c7c7c74d
+                    border-radius: 4px
+            .PopUp__section__nav__button--createGame
+                background: #3c3c3c
+                color: #fafcff
+                &:hover
+                    background: #565656
