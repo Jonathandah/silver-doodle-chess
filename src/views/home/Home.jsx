@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { user$ } from '../../global/store/userStore';
 import { games$, updateGames } from '../../global/store/games';
-import { Redirect } from 'react-router-dom';
 import GamesList from './GamesList';
 import './Home.sass';
 
@@ -29,12 +27,15 @@ function Home() {
     };
   }, []);
 
-  if (!user$.value) {
-    return <Redirect to="/login" />;
-  }
-
   if (!games) {
-    return <div className="lds-ellipsis home-spinner"><div></div><div></div><div></div><div></div></div>;
+    return (
+      <div className="lds-ellipsis home-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
   }
 
   return (
