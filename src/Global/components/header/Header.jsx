@@ -5,7 +5,7 @@ import PopUp from '../popUp/PopUp';
 import './Header.sass';
 
 function Header() {
-  const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
+  const [showPopUp, updateShowPopUp] = useState(false);
 
   return (
     <>
@@ -13,7 +13,7 @@ function Header() {
         <nav className="Header__nav">
           <button
             className="Header__nav__button--createGame"
-            onClick={() => updateShowPopUp({ ...showPopUp, create: true })}
+            onClick={() => updateShowPopUp(true)}
           >
             Create Game
           </button>
@@ -32,9 +32,7 @@ function Header() {
         </nav>
       </header>
 
-      {showPopUp.create ? (
-        <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
-      ) : null}
+      {showPopUp ? <PopUp updateShowPopUp={updateShowPopUp} /> : null}
     </>
   );
 }
