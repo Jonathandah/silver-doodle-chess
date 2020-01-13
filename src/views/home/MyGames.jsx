@@ -43,7 +43,7 @@ function MyGames() {
   };
 
   if (!games) {
-    return <p>Loading...</p>;
+    return <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>;
   }
 
   return <div>{renderList()}</div>;

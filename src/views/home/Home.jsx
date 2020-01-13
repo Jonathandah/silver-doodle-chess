@@ -3,14 +3,12 @@ import axios from 'axios';
 import { user$ } from '../../global/store/userStore';
 import { games$, updateGames } from '../../global/store/games';
 import { Redirect } from 'react-router-dom';
-import PopUp from '../../global/components/popUp/PopUp';
 import GamesList from './GamesList';
 import './Home.sass';
 
 import call from '../../global/api/endpoints';
 
 function Home() {
-  const [showPopUp, updateShowPopUp] = useState({ join: false, create: false });
   const [games, setGames] = useState(null);
 
   useEffect(() => {
@@ -36,21 +34,13 @@ function Home() {
   }
 
   if (!games) {
-    return <p>Loading...</p>;
+    return <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>;
   }
 
   return (
     <div className="Home">
-      {showPopUp.join ? (
-        <PopUp info={showPopUp} updateShowPopUp={updateShowPopUp} />
-      ) : null}
-
       <section className="Home__container">
-        <GamesList
-          games={games}
-          showPopUp={showPopUp}
-          updateShowPopUp={updateShowPopUp}
-        />
+        <GamesList games={games} />
       </section>
     </div>
   );

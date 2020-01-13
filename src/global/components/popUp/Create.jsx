@@ -3,10 +3,10 @@ import React from 'react';
 const Create = ({ label, radio }) => {
     return (
         <form>
-            <label {...label('color', 'white')}>White</label>
+            <i class="far fa-square white__player"></i><label {...label('color', 'white')} className='PopUp__choose__white'>White</label>
             <input {...radio('color', 'White')} />
-
-            <label {...label('color', 'Black')}>Black</label>
+            <br />
+            <i class="fas fa-square black__player"></i><label {...label('color', 'Black')}  className='PopUp__choose__white'>Black</label>
             <input {...radio('color', 'Black')} />
         </form>
     );

@@ -97,7 +97,7 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
   };
 
   if (!game) {
-    return <p>Loading...</p>;
+    return <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>;
   }
 
   return (
