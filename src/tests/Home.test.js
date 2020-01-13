@@ -55,6 +55,20 @@ describe('Render games in home component', () => {
         ).to.have.lengthOf(2);
     });
 
-
 });
+
+
+describe("Try to join game", () => {
+    let wrapper;
+    beforeEach(() => {
+        wrapper = mount(<Router><Home /></Router>);
+    });
+    it("Try joinig game should redirect to GameList component", () => {
+        expect(wrapper.find(".Home__container__list__item__button")).to.have.length(2)
+        let button = wrapper.find(".Home__container__list__item__button")
+        button.at(0).simulate("click")
+        expect(wrapper.update().find("GamesList")).to.have.length(1)
+
+    })
+})
 
