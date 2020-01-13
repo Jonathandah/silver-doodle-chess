@@ -68,7 +68,7 @@ function Register() {
             <ErrorDisplay errorMessage={errors.password || errors.catch} />
           ) : null}
 
-          <button className='Register__section__form__button' type="Submit">Register</button>
+          <button className="Register__section__form__button" type="Submit">Register</button>
         </form>
       </section>
     </div>

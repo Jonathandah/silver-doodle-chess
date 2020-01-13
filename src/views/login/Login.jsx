@@ -82,7 +82,7 @@ function Login() {
             <ErrorDisplay errorMessage={errors.password || errors.catch} />
           ) : null}
 
-          <button className='Login__section__form__button' type="Submit">Login</button>
+          <button className="Login__section__form__button" type="Submit">Login</button>
         </form>
       </section>
     </div>

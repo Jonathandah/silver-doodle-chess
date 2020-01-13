@@ -113,7 +113,7 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
   };
 
   if (!game) {
-    return <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>;
+    return <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>;
   }
 
   return (

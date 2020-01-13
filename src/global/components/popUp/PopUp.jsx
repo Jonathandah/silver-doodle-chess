@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react';
 import axios from 'axios';
 import { useFormState } from 'react-use-form-state';
 import { user$ } from '../../store/userStore';
@@ -46,7 +46,7 @@ const PopUp = ({ updateShowPopUp }) => {
     <div className="PopUp">
       <section className="PopUp__section">
         <div className="PopUp__section__container">
-          <p className='PopUp__section__container__title'>Pick your color <i class="fas fa-chess-rook"></i></p>
+          <p className="PopUp__section__container__title">Pick your color <i className="fas fa-chess-rook"></i></p>
           <Create label={label} radio={radio} />
         </div>
 
