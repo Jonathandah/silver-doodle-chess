@@ -4,6 +4,7 @@ import Chessboard from 'chessboardjsx';
 import axios from 'axios';
 import io from 'socket.io-client';
 import { user$ } from '../../global/store/userStore';
+import './Board.sass';
 
 const socket = io('http://localhost:8000');
 
@@ -15,6 +16,12 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
   const [position, setPosition] = useState(null);
   const [squareStyles, setSquareStyles] = useState({});
   const [game, setGame] = useState(null);
+  const [check, setCheck] = useState(false);
+  const [gameOver, setGameOver] = useState({
+    checkmate: false,
+    draw: false,
+    stalemate: false
+  });
 
   const { gameId } = useParams();
 
@@ -22,6 +29,12 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
     socket.on('new_move', data => {
       setPosition(data.board);
       chess.load(data.board);
+      setGameOver({
+        checkmate: chess.in_checkmate(),
+        draw: chess.in_draw(),
+        stalemate: chess.in_stalemate()
+      });
+      setCheck(chess.in_check());
       setCurrentPlayer(chess.turn());
     });
 
@@ -32,8 +45,13 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
       setPosition(data.board);
       chess.load(data.board);
       setCurrentPlayer(chess.turn());
-
       setGameInfo(data.header);
+      setGameOver({
+        checkmate: chess.in_checkmate(),
+        draw: chess.in_draw(),
+        stalemate: chess.in_stalemate()
+      });
+      setCheck(chess.in_check());
     });
 
     return () => {
@@ -61,14 +79,12 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
 
   let onMouseOverSquare = square => {
     let moves = chess.moves({ square, verbose: true });
-
     if (!moves.length) {
       return;
     }
 
     let squaresToHighlight = [];
     moves.forEach(move => squaresToHighlight.push(move.to));
-
     addHighlight(squaresToHighlight);
   };
 
@@ -101,21 +117,34 @@ const Board = ({ setGameInfo, setCurrentPlayer }) => {
   }
 
   return (
-    <Chessboard
-      position={position}
-      onMouseOverSquare={onMouseOverSquare}
-      onMouseOutSquare={removeHighlight}
-      onDrop={onDrop}
-      draggable={
-        (chess.turn() === 'w' && game.header.White === user$.value) ||
-        (chess.turn() === 'b' && game.header.Black === user$.value)
-      }
-      squareStyles={squareStyles}
-      boardStyle={{
-        borderRadius: '5px',
-        boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
-      }}
-    />
+    <div className="Board">
+      <div className="Board__container">
+        {gameOver.checkmate ? (
+          <p className="Board__container__GameOver">Checkmate</p>
+        ) : gameOver.draw ? (
+          <p className="Board__container__GameOver">It's a draw</p>
+        ) : gameOver.stalemate ? (
+          <p className="Board__container__GameOver">Stalemate</p>
+        ) : check ? (
+          <p className="Board__container__GameOver">Check</p>
+        ) : null}
+      </div>
+      <Chessboard
+        position={position}
+        onMouseOverSquare={onMouseOverSquare}
+        onMouseOutSquare={removeHighlight}
+        onDrop={onDrop}
+        draggable={
+          (chess.turn() === 'w' && game.header.White === user$.value) ||
+          (chess.turn() === 'b' && game.header.Black === user$.value)
+        }
+        squareStyles={squareStyles}
+        boardStyle={{
+          borderRadius: '5px',
+          boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
+        }}
+      />
+    </div>
   );
 };
 
