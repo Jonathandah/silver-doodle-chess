@@ -34,7 +34,7 @@ function Home() {
   }
 
   if (!games) {
-    return <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>;
+    return <div class="lds-ellipsis home-spinner"><div></div><div></div><div></div><div></div></div>;
   }
 
   return (
