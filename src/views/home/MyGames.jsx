@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { user$ } from '../../global/store/userStore';
 import { games$, updateGames } from '../../global/store/games';
+import GamesList from './GamesList';
 
 function MyGames() {
   const [games, setGames] = useState(null);
@@ -46,7 +47,13 @@ function MyGames() {
     return <div className="lds-ellipsis myGames-spinner"><div></div><div></div><div></div><div></div></div>;
   }
 
-  return <div>{renderList()}</div>;
+  return (
+    <div className="Home">
+      <section className="Home__container">
+        <GamesList games={games} />
+      </section>
+    </div>
+  );
 }
 
 export default MyGames;

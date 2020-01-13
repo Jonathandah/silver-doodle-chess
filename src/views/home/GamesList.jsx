@@ -35,6 +35,8 @@ const GamesList = ({ games }) => {
           <button className="Home__container__list__item__button">Play</button>
         </Link>
       );
+    } else {
+      return null;
     }
   };
 
@@ -44,7 +46,9 @@ const GamesList = ({ games }) => {
 
       return (
         <li className="Home__container__list__item" key={idx}>
-          <p className="Home__container__list__item__owner">{game.owner}</p>
+          <p className="Home__container__list__item__owner">
+          <i className="far fa-square white__player"></i> &nbsp;<b>White Player: </b> {game.header.White || '-'} &nbsp; <i className="fas fa-square black__player"></i> &nbsp;<b>Black player:</b> {game.header.Black || '-'}
+          </p>
           {checkJoinability(gameId, game)}
         </li>
       );
